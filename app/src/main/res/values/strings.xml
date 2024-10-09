@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Live TV</string>
+    <string name="tvQuality"><![CDATA[Resolution: ]]></string>
+    <string name="tvAudio"><![CDATA[Audio: ]]></string>
+    <string name="tvTitle"><![CDATA[Title]]></string>
+    <string name="track_selection_title">Video Quality</string>
+    <string name="tvSports">Sports</string>
+    <string name="tvEntertainment">Entertainment</string>
+    <string name="tvMovies">Movies</string>
+    <string name="tvMusic">Music</string>
+    <string name="tvNews">News</string>
+
+    // jsonData
+    <string name="getUrl"><![CDATA[https://raw.githubusercontent.com/4rju9/live/main/get.json]]></string>
+    <string name="fetchUrl"><![CDATA[https://raw.githubusercontent.com/4rju9/live/main/update.json]]></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

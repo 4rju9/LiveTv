@@ -1,0 +1,30 @@
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/ic_add_button.xml" value="0.171" />
+        <entry key="app/src/main/res/drawable/item_selector.xml" value="0.114" />
+        <entry key="app/src/main/res/drawable/rounded_corner.xml" value="0.114" />
+        <entry key="app/src/main/res/layout-land/activity_main.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout-land/activity_player_view.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_player_view.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/layout/custom_controls.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_add.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_entertainment.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/layout/fragment_list.xml" value="0.14" />
+        <entry key="app/src/main/res/layout/fragment_movies.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_music.xml" value="0.1859375" />
+        <entry key="app/src/main/res/layout/fragment_news.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/layout/fragment_sports.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/layout/myadapter_single_item.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/splash_activity.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/layout/splash_screen.xml" value="0.16" />
+        <entry key="app/src/main/res/layout/track_selection_dialog.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/menu/bottom_menu_items.xml" value="0.20364583333333333" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="jbr-17" project-jdk-type="JavaSDK" />
+</project>
