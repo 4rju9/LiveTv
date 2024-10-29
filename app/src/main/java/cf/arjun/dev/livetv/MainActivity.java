@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
                         try {
 
-                            Log.d("4rju9", "Inside the response listener");
                             PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
                             int currentVersionCode = info.versionCode;
                             JSONObject jData = new JSONObject(response);

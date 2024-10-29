@@ -2,8 +2,6 @@ package cf.arjun.dev.livetv;
 
 import android.content.Context;
 import android.widget.Toast;
-
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
