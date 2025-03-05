@@ -34,9 +34,12 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class PlayerViewActivity extends AppCompatActivity {
 
@@ -51,6 +54,8 @@ public class PlayerViewActivity extends AppCompatActivity {
     private boolean playerState = true;
     private int currentMediaItem = 0;
     private long currentPosition = 0L;
+    private boolean hasSubtitles = false;
+    private String subtitleUrl, subtitleLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +106,11 @@ public class PlayerViewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         switch (intent.getAction()) {
             case "HLS": {
+                if (intent.getBooleanExtra("has_track", false)) {
+                    hasSubtitles = true;
+                    subtitleUrl = intent.getStringExtra("track_url");
+                    subtitleLabel = intent.getStringExtra("track_label");
+                }
                 initializePlayer(intent.getStringExtra("url"));
                 break;
             } case "DRM": {                String clearKey = intent.getStringExtra("k");
@@ -165,8 +175,23 @@ public class PlayerViewActivity extends AppCompatActivity {
         playerView.setPlayer(exoPlayer);
 
         try {
-
-            MediaItem media = MediaItem.fromUri(url);
+            MediaItem media;
+            if (hasSubtitles) {
+                MediaItem.SubtitleConfiguration subtitleConfiguration =
+                        new MediaItem.SubtitleConfiguration.Builder(Uri.parse(subtitleUrl))
+                                .setMimeType(MimeTypes.TEXT_VTT)
+                                .setLanguage(subtitleLabel)
+                                .setSelectionFlags(C.SELECTION_FLAG_DEFAULT)
+                                .build();
+                List<MediaItem.SubtitleConfiguration> subTracks = new ArrayList<>();
+                subTracks.add(subtitleConfiguration);
+                media = new MediaItem.Builder()
+                        .setUri(url)
+                        .setSubtitleConfigurations(subTracks)
+                        .build();
+            } else {
+                media = MediaItem.fromUri(url);
+            }
             exoPlayer.setMediaItem(media);
             exoPlayer.seekTo(currentMediaItem, currentPosition);
 
@@ -174,9 +199,7 @@ public class PlayerViewActivity extends AppCompatActivity {
 
             exoPlayer.setPlayWhenReady(playerState);
             exoPlayer.prepare();
-
             initializePlayerUI();
-
         } catch (Exception ignore) {}
 
     }
@@ -344,10 +367,12 @@ public class PlayerViewActivity extends AppCompatActivity {
             if (exoPlayer.getPlayerError() != null) exoPlayer.prepare();
             exoPlayer.play();
             playerState = true;
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         });
         findViewById(R.id.exo_pause).setOnClickListener(v -> {
             exoPlayer.pause();
             playerState = false;
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         });
 
     }

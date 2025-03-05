@@ -1,6 +1,7 @@
 package cf.arjun.dev.livetv;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -81,6 +83,10 @@ public class EntertainmentFragment extends Fragment {
                     handler.removeCallbacks(runnable);
                 }
                 runnable = () -> {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.hideSoftInputFromWindow(searchBar.getWindowToken(), 0);
+                    }
                     searchQuery(query);
                 };
                 handler.postDelayed(runnable, 500);
@@ -99,6 +105,8 @@ public class EntertainmentFragment extends Fragment {
                 adapter.isSearched = false;
             }
         } else {
+            dialog.setTitle("Searching for " + query + " !!");
+            dialog.setMessage("Please wait....");
             dialog.show();
             String base_url = getString(R.string.searchAnimeUrl);
             getAnimeList(base_url, query, currentPage);
