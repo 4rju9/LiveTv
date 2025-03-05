@@ -7,7 +7,8 @@
     app:cardElevation="20dp"
     app:cardCornerRadius="40dp"
     app:flow_maxElementsWrap="@integer/material_motion_duration_long_2"
-    android:layout_marginBottom="20dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp">
 
@@ -24,66 +25,210 @@
             android:scaleType="centerCrop"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/mainContainer"/>
 
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="28sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/poppins_med"
+        <LinearLayout
+            android:id="@+id/mainContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:layout_marginHorizontal="15dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivSingleItem"/>
+            android:layout_marginBottom="16dp"
+            app:layout_constraintLeft_toLeftOf="@id/ivSingleItem"
+            app:layout_constraintRight_toRightOf="@id/ivSingleItem"
+            app:layout_constraintTop_toBottomOf="@id/ivSingleItem"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/labelQuality"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tvQuality"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/poppins_light"
-            app:layout_constraintLeft_toLeftOf="@id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle"/>
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="28sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_med"/>
 
-        <TextView
-            android:id="@+id/tvQuality"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/poppins_light"
-            app:layout_constraintLeft_toRightOf="@id/labelQuality"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle"/>
+            <LinearLayout
+                android:id="@+id/labelQuality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
-        <TextView
-            android:id="@+id/labelAudio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tvAudio"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/poppins_light"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintLeft_toLeftOf="@id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@id/labelQuality"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/tvQuality"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_light"/>
 
-        <TextView
-            android:id="@+id/tvLang"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/poppins_light"
-            app:layout_constraintLeft_toRightOf="@id/labelAudio"
-            app:layout_constraintTop_toBottomOf="@id/labelQuality"/>
+                <TextView
+                    android:id="@+id/tvQuality"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_light"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/labelAudio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/tvAudio"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_light"/>
+
+                <TextView
+                    android:id="@+id/tvLang"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_light"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/labelDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/tvDuration"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_light"/>
+
+                <TextView
+                    android:id="@+id/tvDuration"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_light"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/labelType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/tvType"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_light"/>
+
+                <TextView
+                    android:id="@+id/tvType"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_light"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/labelEpisodes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/tvEpisodes"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_light"/>
+
+                <TextView
+                    android:id="@+id/labelSubs"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/tvSubs"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_light"/>
+
+                <TextView
+                    android:id="@+id/tvSubs"
+                    android:visibility="gone"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_light"/>
+
+                <TextView
+                    android:id="@+id/labelDubs"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/tvDubs"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_light"/>
+
+                <TextView
+                    android:id="@+id/tvDubs"
+                    android:visibility="gone"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_light"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

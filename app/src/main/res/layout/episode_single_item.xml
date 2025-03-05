@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="20dp"
+    android:background="@drawable/rounded_corner2"
+    android:layout_marginBottom="8dp">
+
+    <!-- Episode Number -->
+    <TextView
+        android:id="@+id/episodeNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Episode: "
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="16sp" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/episodeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/isFiller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Episode: "
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginTop="6dp"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/subServers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_marginTop="6dp">
+
+        <!-- Dub Servers -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sub Servers:"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/subServersRecyclerView"
+            android:layout_width="wrap_content"
+            tools:itemCount="2"
+            tools:listitem="@layout/server_item"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dubServers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_marginTop="6dp">
+
+        <!-- Dub Servers -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dub Servers:"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dubServersRecyclerView"
+            android:layout_width="wrap_content"
+            tools:itemCount="2"
+            tools:listitem="@layout/server_item"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rawServers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_marginTop="6dp">
+
+        <!-- Dub Servers -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Raw Servers:"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"
+            android:layout_marginEnd="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rawServersRecyclerView"
+            android:layout_width="wrap_content"
+            tools:itemCount="2"
+            tools:listitem="@layout/server_item"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/white"/>
+
+</LinearLayout>

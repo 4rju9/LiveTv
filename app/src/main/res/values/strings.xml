@@ -9,11 +9,18 @@
     <string name="tvMovies">Movies</string>
     <string name="tvMusic">Music</string>
     <string name="tvNews">News</string>
+    <string name="tvDuration"><![CDATA[Duration: ]]></string>
+    <string name="tvType"><![CDATA[Type: ]]></string>
+    <string name="tvEpisodes"><![CDATA[Episodes: ]]></string>
+    <string name="tvSubs"><![CDATA[Subs: ]]></string>
+    <string name="tvDubs"><![CDATA[Dubs: ]]></string>
 
     // jsonData
     <string name="getUrl"><![CDATA[https://raw.githubusercontent.com/4rju9/live/main/get.json]]></string>
     <string name="fetchUrl"><![CDATA[https://raw.githubusercontent.com/4rju9/live/main/update.json]]></string>
+    <string name="searchAnimeUrl"><![CDATA[https://aniwatch-api-sp3v.onrender.com]]></string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_search_anime">Search anime</string>
 </resources>

@@ -49,6 +49,19 @@ public class Queue {
 
     }
 
+    public void makeRequest (int method, String url, Response.Listener<String> response, Response.ErrorListener error) {
+
+        StringRequest request = new StringRequest(
+                method,
+                url,
+                response,
+                error
+        );
+        request.setTag(TAG);
+        getRequestQueue().add(request);
+
+    }
+
     public void onStop () {
 
         if (requestQueue != null) {
