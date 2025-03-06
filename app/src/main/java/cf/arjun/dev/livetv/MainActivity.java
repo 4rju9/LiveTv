@@ -12,6 +12,8 @@ import android.util.Log;
 import android.widget.Toast;
 import com.android.volley.Request;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -87,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkForUpdate (String FETCH_URL) {
         if (queue != null) {
-            queue.makeRequest(Request.Method.GET,
+            queue.makeRequest(
+                    Request.Method.GET,
                     FETCH_URL,
                     response -> {
 
@@ -98,12 +101,18 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject jData = new JSONObject(response);
 
                             int latestVersionCode = jData.getInt("latestVersionCode");
+                            JSONArray releaseNotes = jData.getJSONArray("releaseNotes");
+                            String notes = "";
+                            for (int i = 0; i < releaseNotes.length(); i++) {
+                                notes += "\n\n" + releaseNotes.get(i);
+                            }
 
                             if (currentVersionCode < latestVersionCode) {
 
                                 String url = jData.getString("url");
                                 String latestVersionName = jData.getString("latestVersion");
-                                runOnUiThread(() -> showUpdateAppDialog(url, info.versionName, latestVersionName));
+                                String finalNotes = notes;
+                                runOnUiThread(() -> showUpdateAppDialog(url, info.versionName, latestVersionName, finalNotes));
 
                             }
 
@@ -113,12 +122,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void showUpdateAppDialog (String url, String current, String latest) {
+    public void showUpdateAppDialog (String url, String current, String latest, String notes) {
 
         final AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Product update!")
                 .setMessage("A new version is available.\nWould you like to update now?\n" +
-                        "(Current: " + current + " Latest: " + latest + ")")
+                        "(Current: " + current + " Latest: " + latest + ")" + notes
+                )
                 .setPositiveButton("Update", (dialog1, which) -> {
                     try {
                         Intent intent = new Intent();

@@ -318,11 +318,21 @@ public class PlayerViewActivity extends AppCompatActivity {
             try {
 
                 long currentNum = exoPlayer.getCurrentPosition();
-                long num = currentNum + 10000;
-                long maxPossibleSkip = exoPlayer.getDuration();
-                if (maxPossibleSkip == C.TIME_UNSET) maxPossibleSkip = num;
-                if (num <= maxPossibleSkip) exoPlayer.seekTo(currentNum);
-                else exoPlayer.seekTo(maxPossibleSkip);
+                long seekTo = currentNum + 10000; // 10 seconds forward
+                long maxSeek = exoPlayer.getDuration();
+
+                // Handle live streams
+                if (maxSeek == C.TIME_UNSET) {
+                    maxSeek = exoPlayer.getBufferedPosition(); // Use buffered position for live content
+                }
+
+                // Ensure seeking doesn't exceed the max duration
+                if (seekTo > maxSeek) {
+                    seekTo = maxSeek;
+                }
+
+                // Seek to the calculated position
+                exoPlayer.seekTo(seekTo);
 
             } catch (Exception ignore) {}
 

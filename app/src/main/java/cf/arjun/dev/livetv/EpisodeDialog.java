@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,8 +17,14 @@ import org.json.JSONObject;
 
 public class EpisodeDialog {
 
+    private static AlertDialog currentDialog; // Store reference to the dialog
     public static void show(Context context, String jsonResponse, String poster) {
         try {
+
+            if (currentDialog != null && currentDialog.isShowing()) {
+                return;
+            }
+
             JSONObject response = new JSONObject(jsonResponse);
             JSONObject data = response.getJSONObject("data");
             JSONArray episodes = data.getJSONArray("episodes");
@@ -35,7 +42,7 @@ public class EpisodeDialog {
             recyclerView.setAdapter(new EpisodeAdapter(context, episodes));
 
             // Create & Show Dialog
-            new MaterialAlertDialogBuilder(context)
+            currentDialog = new MaterialAlertDialogBuilder(context)
                     .setView(dialogView)
                     .show();
 

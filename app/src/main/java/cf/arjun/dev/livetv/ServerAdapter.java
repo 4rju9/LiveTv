@@ -19,6 +19,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerViewHolder> {
 
     private Context context;
@@ -69,45 +72,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
                                 ),
                                 response -> {
                                     dialog.dismiss();
-                                    try {
-                                        JSONObject object = new JSONObject(response);
-                                        object = object.getJSONObject("data");
-                                        if (object.getJSONArray("sources").length() > 0) {
-                                            Intent intent = new Intent(context, PlayerViewActivity.class);
-                                            String url = object.getJSONArray("sources").getJSONObject(0).getString("url");
-                                            JSONArray tracks = object.getJSONArray("tracks");
-                                            intent.putExtra("has_track", false);
-                                            int track_size = tracks.length();
-                                            String[] track_urls = new String[track_size];
-                                            String[] track_labels = new String[track_size];
-                                            if (track_size > 0) {
-                                                for (int i = 0; i < tracks.length(); i++) {
-                                                    JSONObject track = tracks.getJSONObject(i);
-                                                /*Log.d("Arjun", track.toString());
-                                                if (track.has("label") && track.getString("label").contentEquals("English")) {
-                                                    intent.putExtra("track_url", track.getString("file"));
-                                                    intent.putExtra("track_label", "en");
-                                                    intent.putExtra("has_track", true);
-                                                    break;
-                                                }*/
-                                                    if (track.has("label")) {
-                                                        track_urls[i] = track.getString("file");
-                                                        track_labels[i] = track.getString("label");
-                                                    }
-                                                }
-                                                intent.putExtra("has_track", true);
-                                                intent.putExtra("track_urls", track_urls);
-                                                intent.putExtra("track_labels", track_labels);
-                                            }
-                                            intent.putExtra("url", url);
-                                            intent.setAction("HLS");
-                                            context.startActivity(intent);
-                                        } else {
-                                            dialog.dismiss();
-                                            Toast.makeText(context, "No sources found!", Toast.LENGTH_SHORT).show();
-                                            Log.d("Arjun", "No sources found!");
-                                        }
-                                    } catch (JSONException e) { Log.d("Arjun", e.getMessage()); }
+                                    handleResponse(response);
                                 },
                                 error -> {
                                     Toast.makeText(context, "Something went wrong, " + error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -137,4 +102,50 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
             serverName = itemView.findViewById(R.id.serverButton);
         }
     }
+
+    private void handleResponse (String response) {
+        try {
+            JSONObject object = new JSONObject(response);
+            object = object.getJSONObject("data");
+            if (object.getJSONArray("sources").length() > 0) {
+
+                Intent intent = new Intent(context, PlayerViewActivity.class);
+                String url = object.getJSONArray("sources").getJSONObject(0).getString("url");
+                JSONArray tracks = object.getJSONArray("tracks");
+
+                int track_size = tracks.length();
+
+                if (track_size > 1) {
+
+                    List<String> track_urls = new ArrayList<>();
+                    List<String> track_labels = new ArrayList<>();
+                    Log.d("Arjun", "Track found: " + track_size + "\n" + tracks.toString());
+
+                    for (int i = 0; i < track_size; i++) {
+                        JSONObject track = tracks.getJSONObject(i);
+                        if (track.has("label")) {
+                            track_urls.add(track.getString("file"));
+                            track_labels.add(track.getString("label"));
+                        } else Log.d("Arjun", "No label found");
+                    }
+                    intent.putExtra("has_track", true);
+                    intent.putExtra("track_urls", track_urls.toArray(new String[0]));
+                    intent.putExtra("track_labels", track_labels.toArray(new String[0]));
+                } else {
+                    intent.putExtra("has_track", false);
+                    Log.d("Arjun", "No tracks found");
+                }
+
+                intent.putExtra("url", url);
+                intent.setAction("HLS");
+                context.startActivity(intent);
+
+            } else {
+                dialog.dismiss();
+                Toast.makeText(context, "No sources found!", Toast.LENGTH_SHORT).show();
+                Log.d("Arjun", "No sources found!");
+            }
+        } catch (JSONException e) { Log.d("Arjun", e.getMessage()); }
+    }
+
 }
