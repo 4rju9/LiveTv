@@ -55,7 +55,7 @@ public class PlayerViewActivity extends AppCompatActivity {
     private int currentMediaItem = 0;
     private long currentPosition = 0L;
     private boolean hasSubtitles = false;
-    private String subtitleUrl, subtitleLabel;
+    private String[] subtitleUrl, subtitleLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,8 +108,8 @@ public class PlayerViewActivity extends AppCompatActivity {
             case "HLS": {
                 if (intent.getBooleanExtra("has_track", false)) {
                     hasSubtitles = true;
-                    subtitleUrl = intent.getStringExtra("track_url");
-                    subtitleLabel = intent.getStringExtra("track_label");
+                    subtitleUrl = intent.getStringArrayExtra("track_urls");
+                    subtitleLabel = intent.getStringArrayExtra("track_labels");
                 }
                 initializePlayer(intent.getStringExtra("url"));
                 break;
@@ -177,14 +177,18 @@ public class PlayerViewActivity extends AppCompatActivity {
         try {
             MediaItem media;
             if (hasSubtitles) {
-                MediaItem.SubtitleConfiguration subtitleConfiguration =
-                        new MediaItem.SubtitleConfiguration.Builder(Uri.parse(subtitleUrl))
-                                .setMimeType(MimeTypes.TEXT_VTT)
-                                .setLanguage(subtitleLabel)
-                                .setSelectionFlags(C.SELECTION_FLAG_DEFAULT)
-                                .build();
                 List<MediaItem.SubtitleConfiguration> subTracks = new ArrayList<>();
-                subTracks.add(subtitleConfiguration);
+
+                for (int i = 0; i < subtitleUrl.length; i++) {
+                    MediaItem.SubtitleConfiguration subtitleConfiguration =
+                            new MediaItem.SubtitleConfiguration.Builder(Uri.parse(subtitleUrl[i]))
+                                    .setMimeType(MimeTypes.TEXT_VTT)
+                                    .setLanguage(subtitleLabel[i])
+                                    .setSelectionFlags(C.SELECTION_FLAG_DEFAULT)
+                                    .build();
+                    subTracks.add(subtitleConfiguration);
+                }
+
                 media = new MediaItem.Builder()
                         .setUri(url)
                         .setSubtitleConfigurations(subTracks)

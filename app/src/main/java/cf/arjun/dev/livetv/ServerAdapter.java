@@ -77,15 +77,27 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
                                             String url = object.getJSONArray("sources").getJSONObject(0).getString("url");
                                             JSONArray tracks = object.getJSONArray("tracks");
                                             intent.putExtra("has_track", false);
-                                            for (int i = 0; i < tracks.length(); i++) {
-                                                JSONObject track = tracks.getJSONObject(i);
-                                                Log.d("Arjun", track.toString());
+                                            int track_size = tracks.length();
+                                            String[] track_urls = new String[track_size];
+                                            String[] track_labels = new String[track_size];
+                                            if (track_size > 0) {
+                                                for (int i = 0; i < tracks.length(); i++) {
+                                                    JSONObject track = tracks.getJSONObject(i);
+                                                /*Log.d("Arjun", track.toString());
                                                 if (track.has("label") && track.getString("label").contentEquals("English")) {
                                                     intent.putExtra("track_url", track.getString("file"));
                                                     intent.putExtra("track_label", "en");
                                                     intent.putExtra("has_track", true);
                                                     break;
+                                                }*/
+                                                    if (track.has("label")) {
+                                                        track_urls[i] = track.getString("file");
+                                                        track_labels[i] = track.getString("label");
+                                                    }
                                                 }
+                                                intent.putExtra("has_track", true);
+                                                intent.putExtra("track_urls", track_urls);
+                                                intent.putExtra("track_labels", track_labels);
                                             }
                                             intent.putExtra("url", url);
                                             intent.setAction("HLS");
