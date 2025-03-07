@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerViewHolder> {
 
@@ -115,25 +116,23 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
 
                 int track_size = tracks.length();
 
-                if (track_size > 1) {
+                if (track_size > 0) {
 
                     List<String> track_urls = new ArrayList<>();
                     List<String> track_labels = new ArrayList<>();
-                    Log.d("Arjun", "Track found: " + track_size + "\n" + tracks.toString());
 
                     for (int i = 0; i < track_size; i++) {
                         JSONObject track = tracks.getJSONObject(i);
                         if (track.has("label")) {
                             track_urls.add(track.getString("file"));
                             track_labels.add(track.getString("label"));
-                        } else Log.d("Arjun", "No label found");
+                        }
                     }
-                    intent.putExtra("has_track", true);
+                    intent.putExtra("has_track", !track_urls.isEmpty());
                     intent.putExtra("track_urls", track_urls.toArray(new String[0]));
                     intent.putExtra("track_labels", track_labels.toArray(new String[0]));
                 } else {
                     intent.putExtra("has_track", false);
-                    Log.d("Arjun", "No tracks found");
                 }
 
                 intent.putExtra("url", url);
@@ -145,7 +144,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
                 Toast.makeText(context, "No sources found!", Toast.LENGTH_SHORT).show();
                 Log.d("Arjun", "No sources found!");
             }
-        } catch (JSONException e) { Log.d("Arjun", e.getMessage()); }
+        } catch (JSONException e) { Log.d("Arjun", Objects.requireNonNull(e.getMessage())); }
     }
 
 }
