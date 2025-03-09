@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/transparentBlack">
 
-
     <ImageView
         android:id="@+id/exo_playback_speed"
         android:layout_width="wrap_content"
