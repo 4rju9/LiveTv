@@ -12,4 +12,17 @@
     <color name="lightWhite">#FCFBF4</color>
     <color name="lightBlue">#40C4FF</color>
     <color name="light">#D50000</color>
+
+    <!-- Custom Colors -->
+    <color name="deep_sky_blue">#00BEF7</color>
+    <color name="white_transparent_20">#33FFFFFF</color>
+    <color name="white_transparent_60">#99F8F8F8</color>
+    <color name="cool_brown">#795547</color>
+    <color name="cool_yellow">#F3B60D</color>
+    <color name="cool_purple">#9933FF</color>
+    <color name="cool_pink">#F90576</color>
+    <color name="cool_light_gray">#303030</color>
+    <color name="cool_dark_purple">#3E2C5E</color>
+    <color name="cool_black">#20292E</color>
+
 </resources>

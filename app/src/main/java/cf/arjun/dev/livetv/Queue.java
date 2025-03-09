@@ -58,6 +58,7 @@ public class Queue {
                 error
         );
         request.setTag(TAG);
+        request.setShouldCache(true);
         getRequestQueue().add(request);
 
     }

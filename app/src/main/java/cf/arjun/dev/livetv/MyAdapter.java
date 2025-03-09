@@ -29,7 +29,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private JSONArray data = new JSONArray();
     private Context context;
 
-    public boolean isSearched = false;
+    public boolean isSearched = false, isAnime = false;
     private Queue queue;
     private ProgressDialog dialog;
     public MyAdapter (Context context) {
@@ -101,14 +101,17 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                     Glide.with(context).load(poster).into(holder.image);
                 }
 
-                holder.labelDuration.setVisibility(View.VISIBLE);
                 holder.labelType.setVisibility(View.VISIBLE);
                 holder.labelEpisodes.setVisibility(View.VISIBLE);
                 holder.labelQuality.setVisibility(View.GONE);
                 holder.labelAudio.setVisibility(View.GONE);
                 holder.title.setText(object.getString("jname"));
-                holder.duration.setText(object.getString("duration"));
                 holder.type.setText(object.getString("type"));
+
+                if (!isAnime) {
+                    holder.labelDuration.setVisibility(View.VISIBLE);
+                    holder.duration.setText(object.getString("duration"));
+                }
 
                 JSONObject episodes = object.getJSONObject("episodes");
                 String subs = episodes.getString("sub");
@@ -126,7 +129,9 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
                 anime_id = object.getString("id");
 
-            } catch (JSONException ignore) {}
+            } catch (JSONException e) {
+                Log.d("Arjun", e.getMessage());
+            }
         }
 
         Intent finalIntent = intent;

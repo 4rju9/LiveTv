@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Episode: "
-        android:textColor="@color/white"
+        android:textColor="?attr/ThemeIconColor"
         android:textStyle="bold"
         android:textSize="16sp" />
 
@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Title"
-        android:textColor="@color/white"
+        android:textColor="?attr/ThemeIconColor"
         android:textStyle="bold"
         android:layout_marginTop="6dp"
         android:textSize="18sp" />
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:text="Episode: "
         android:textStyle="bold"
-        android:textColor="@color/white"
+        android:textColor="?attr/ThemeIconColor"
         android:layout_marginTop="6dp"
         android:textSize="16sp" />
 
@@ -55,7 +55,7 @@
             android:text="Sub Servers:"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/ThemeIconColor"
             android:layout_marginEnd="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -82,7 +82,7 @@
             android:text="Dub Servers:"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/ThemeIconColor"
             android:layout_marginEnd="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -109,7 +109,7 @@
             android:text="Raw Servers:"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/ThemeIconColor"
             android:layout_marginEnd="10dp"/>
 
         <androidx.recyclerview.widget.RecyclerView

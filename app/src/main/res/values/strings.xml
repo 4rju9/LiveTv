@@ -6,7 +6,7 @@
     <string name="track_selection_title">Video Quality</string>
     <string name="tvSports">Sports</string>
     <string name="tvEntertainment">Entertainment</string>
-    <string name="tvMovies">Movies</string>
+    <string name="tvAnime">Anime</string>
     <string name="tvMusic">Music</string>
     <string name="tvNews">News</string>
     <string name="tvDuration"><![CDATA[Duration: ]]></string>

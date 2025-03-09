@@ -1,40 +1,69 @@
 package cf.arjun.dev.livetv;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.Request;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.concurrent.Executors;
+
+import cf.arjun.dev.livetv.databinding.ThemeViewBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     private Queue queue;
     public static JSONObject jsonData = null;
+    public static JSONArray MOST_POPULAR, TOP_AIRING;
     public static String MUSIC = "music";
     public static String SPORTS = "sports";
     public static String ENTERTAINMENT = "entertainment";
-    public static String MOVIES = "movies";
     public static String NEWS = "news";
 
     // UI Views.
     private BottomNavigationView bottomBar;
+    private Handler handler = new Handler();
+    private Runnable runnable;
+    private Fragment fragment;
+    private EditText searchBar;
+    public static int THEME_INDEX = 0;
+    public static int[] THEMES = {
+            R.style.DeepSkyBlueNav, R.style.BrownNav, R.style.YellowNav, R.style.PurpleNav,
+            R.style.PinkNav, R.style.DarkBlackTheme, R.style.DarkPurpleNav, R.style.BlackNav,
+            R.style.BlueBlackNav, R.style.BrownBlackNav, R.style.YellowBlackNav, R.style.PinkBlackNav
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        saveTheme(-1);
+        setTheme(THEMES[THEME_INDEX]);
+
         setContentView(R.layout.activity_main);
 
         Executors.newFixedThreadPool(1).execute(() -> {
@@ -42,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             checkForUpdate(FETCH_URL);
         });
         setupUIViews();
+        setupMenuBar();
         setupBottomBar();
 
     }
@@ -50,36 +80,153 @@ public class MainActivity extends AppCompatActivity {
 
         queue = Queue.getInstance(MainActivity.this);
         bottomBar = findViewById(R.id.bottomNavigationBar);
-        bottomBar.setSelectedItemId(R.id.menuMovies);
+        bottomBar.setSelectedItemId(R.id.menuAnime);
+        searchBar = findViewById(R.id.searchViewContainer);
+        setupSearchBar();
+    }
 
+    private void setupMenuBar () {
+
+        findViewById(R.id.main_activity_menu).setOnClickListener( view -> {
+
+            View customDialog = LayoutInflater.from(this).inflate(R.layout.theme_view, findViewById(R.id.root), false);
+            ThemeViewBinding themeBinding = ThemeViewBinding.bind(customDialog);
+            AlertDialog mainDialog = new MaterialAlertDialogBuilder(this)
+                    .setView(customDialog)
+                    .setTitle("App Theme")
+                    .create();
+            mainDialog.show();
+
+            switch (THEME_INDEX) {
+                case 0: {
+                    themeBinding.deepSkyBlueTheme.setBackgroundColor(Color.LTGRAY);
+                    break;
+                }
+                case 1: {
+                    themeBinding.brownTheme.setBackgroundColor(Color.LTGRAY);
+                    break;
+                }
+                case 2: {
+                    themeBinding.yellowTheme.setBackgroundColor(Color.LTGRAY);
+                    break;
+                }
+                case 3: {
+                    themeBinding.purpleTheme.setBackgroundColor(Color.LTGRAY);
+                    break;
+                }
+                case 4: {
+                    themeBinding.pinkTheme.setBackgroundColor(Color.LTGRAY);
+                    break;
+                }
+                case 5: {
+                    themeBinding.darkBlackTheme.setBackgroundColor(Color.LTGRAY);
+                    break;
+                }
+                case 6: {
+                    themeBinding.darkPurpleTheme.setBackgroundColor(Color.LTGRAY);
+                    break;
+                }
+                case 7: {
+                    themeBinding.blackTheme.setBackgroundColor(Color.LTGRAY);
+                    break;
+                }
+                case 8: {
+                    themeBinding.blueBlackTheme.setBackgroundColor(Color.LTGRAY);
+                    break;
+                }
+                case 9: {
+                    themeBinding.brownBlackTheme.setBackgroundColor(Color.LTGRAY);
+                    break;
+                }
+                case 10: {
+                    themeBinding.yellowBlackTheme.setBackgroundColor(Color.LTGRAY);
+                    break;
+                }
+                case 11: {
+                    themeBinding.pinkBlackTheme.setBackgroundColor(Color.LTGRAY);
+                    break;
+                }
+            }
+
+            themeBinding.deepSkyBlueTheme.setOnClickListener(v -> saveTheme(0));
+            themeBinding.brownTheme.setOnClickListener(v -> saveTheme(1));
+            themeBinding.yellowTheme.setOnClickListener(v -> saveTheme(2));
+            themeBinding.purpleTheme.setOnClickListener(v -> saveTheme(3));
+            themeBinding.pinkTheme.setOnClickListener(v -> saveTheme(4));
+            themeBinding.darkBlackTheme.setOnClickListener(v -> saveTheme(5));
+            themeBinding.darkPurpleTheme.setOnClickListener(v -> saveTheme(6));
+            themeBinding.blackTheme.setOnClickListener(v -> saveTheme(7));
+            themeBinding.blueBlackTheme.setOnClickListener(v -> saveTheme(8));
+            themeBinding.brownBlackTheme.setOnClickListener(v -> saveTheme(9));
+            themeBinding.yellowBlackTheme.setOnClickListener(v -> saveTheme(10));
+            themeBinding.pinkBlackTheme.setOnClickListener(v -> saveTheme(11));
+
+        });
+
+    }
+
+    private void setupSearchBar () {
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = searchBar.getText().toString();
+                searchAnime(query);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void searchAnime (String query) {
+        if (runnable != null) {
+            handler.removeCallbacks(runnable);
+        }
+        runnable = () -> {
+            if (fragment != null) {
+                if (fragment instanceof AnimeFragment) {
+                    ((AnimeFragment) fragment).searchQuery(query);
+                }
+            }
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(searchBar.getWindowToken(), 0);
+            }
+        };
+        handler.postDelayed(runnable, 650);
     }
 
     private void setupBottomBar () {
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, new MoviesFragment()).commit();
+        fragment = new AnimeFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, fragment).commit();
 
         bottomBar.setOnNavigationItemSelectedListener(item -> {
 
-            Fragment fragment;
             int itemID = item.getItemId();
 
             if (itemID == R.id.menuSports) {
+                searchBar.setVisibility(View.GONE);
                 fragment = new SportsFragment();
             } else if (itemID == R.id.menuEntertainment) {
+                searchBar.setVisibility(View.GONE);
                 fragment = new EntertainmentFragment();
-            } else if (itemID == R.id.menuMovies) {
-                fragment = new MoviesFragment();
+            } else if (itemID == R.id.menuAnime) {
+                searchBar.setVisibility(View.VISIBLE);
+                fragment = new AnimeFragment();
             } else if (itemID == R.id.menuMusic) {
+                searchBar.setVisibility(View.GONE);
                 fragment = new MusicFragment();
             } else if (itemID == R.id.menuNews) {
+                searchBar.setVisibility(View.GONE);
                 fragment = new NewsFragment();
             } else {
-                fragment = null;
+                searchBar.setVisibility(View.VISIBLE);
+                fragment = new AnimeFragment();
             }
 
-            if (fragment != null) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, fragment).commit();
-            }
+            getSupportFragmentManager().beginTransaction().replace(R.id.mainContainer, fragment).commit();
 
             return true;
 
@@ -146,6 +293,27 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void saveTheme (int index) {
+
+        SharedPreferences prefs = getSharedPreferences("AppThemes", Context.MODE_PRIVATE);
+
+        if (index == -1) {
+            THEME_INDEX = prefs.getInt("themeIndex", 0);
+        } else {
+            prefs.edit().putInt("themeIndex", index).apply();
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+                if (intent != null) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finishAffinity();
+                    System.exit(0);
+                }
+            }, 200); // Delay for 200ms to ensure data is saved
+        }
+
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -166,7 +334,5 @@ public class MainActivity extends AppCompatActivity {
         queue = null;
         jsonData = null;
     }
-
-
 
 }

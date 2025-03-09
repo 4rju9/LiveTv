@@ -5,14 +5,17 @@
         android:id="@+id/menuSports"
         android:title="@string/tvSports"
         android:icon="@drawable/ic_sports"/>
+
     <item
         android:id="@+id/menuEntertainment"
         android:title="@string/tvEntertainment"
         android:icon="@drawable/ic_entertainment"/>
+
     <item
-        android:id="@+id/menuMovies"
-        android:title="@string/tvMovies"
-        android:icon="@drawable/ic_movies"/>
+        android:id="@+id/menuAnime"
+        android:title="@string/tvAnime"
+        android:icon="@drawable/ic_anime"/>
+
     <item
         android:id="@+id/menuMusic"
         android:title="@string/tvMusic"

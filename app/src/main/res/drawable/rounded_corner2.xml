@@ -8,6 +8,6 @@
         android:bottomRightRadius="50dp"/>
 
     <solid
-        android:color="@color/lightBlue"/>
+        android:color="?attr/ThemePrimary"/>
 
 </shape>

@@ -3,11 +3,54 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainContainer"
-    android:background="@color/lightWhite"
+    android:background="?attr/ThemeSecondary"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root"
     tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/searchViewContainer"
+        android:background="@drawable/rounded_corner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:hint="@string/tv_search_anime"
+        android:textColorHint="?attr/ThemeIconColor"
+        android:textColor="?attr/ThemeIconColor"
+        android:textStyle="italic|bold"
+        android:textSize="20sp"
+        android:inputType="text"
+        android:autofillHints="name"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toTopOf="@id/main_activity_menu"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/main_activity_menu"
+        app:layout_constraintBottom_toBottomOf="@id/main_activity_menu"/>
+
+    <ImageButton
+        android:id="@+id/main_activity_menu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_menu"
+        android:background="@null"
+        app:tint="?attr/ThemeIconColorSecondary"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginVertical="8dp"
+        app:layout_constraintTop_toBottomOf="@id/main_activity_menu"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationBar"
@@ -22,8 +65,7 @@
         android:background="@drawable/rounded_corner"
         app:itemIconTint="@drawable/item_selector"
         app:menu="@menu/bottom_menu_items"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
+        app:layout_constraintRight_toRightOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
