@@ -93,9 +93,10 @@ public class SplashActivity extends AppCompatActivity {
                                 } else Log.d("Arjun", "Something went wrong!");
                             } catch (JSONException error) {
                                 Toast.makeText(this, "Something went wrong, " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                            } finally {
+                                String FETCH_URL = getString(R.string.getUrl);
+                                getList(FETCH_URL);
                             }
-                            String FETCH_URL = getString(R.string.getUrl);
-                            getList(FETCH_URL);
                         },
                         error -> {
                             Toast.makeText(this, "Something went wrong, Come back later!", Toast.LENGTH_LONG).show();

@@ -18,6 +18,7 @@
     <attr name="ThemePrimary" format="color" />
     <attr name="ThemeSecondary" format="color" />
     <attr name="ThemeTextColor" format="color" />
+    <attr name="ThemeTextColorSecondary" format="color" />
     <attr name="ThemeIconColor" format="color" />
     <attr name="ThemeIconColorSecondary" format="color" />
     <attr name="ThemeIconInactiveColor" format="color" />
@@ -27,7 +28,8 @@
         <!-- Customize your light theme here. -->
         <item name="ThemePrimary">@color/deep_sky_blue</item>
         <item name="ThemeSecondary">@color/white</item>
-        <item name="ThemeTextColor">@color/white</item>
+        <item name="ThemeTextColor">@color/black</item>
+        <item name="ThemeTextColorSecondary">@color/white</item>
         <item name="ThemeIconColor">?attr/ThemeSecondary</item>
         <item name="ThemeIconColorSecondary">?attr/ThemePrimary</item>
         <item name="ThemeIconInactiveColor">?attr/ThemeTextColor</item>
@@ -43,6 +45,7 @@
         <item name="ThemePrimary">@color/cool_brown</item>
         <item name="ThemeSecondary">@color/white</item>
         <item name="ThemeTextColor">@color/black</item>
+        <item name="ThemeTextColorSecondary">@color/white</item>
         <item name="ThemeIconColor">?attr/ThemeSecondary</item>
         <item name="ThemeIconColorSecondary">?attr/ThemePrimary</item>
         <item name="ThemeIconInactiveColor">?attr/ThemeTextColor</item>
@@ -58,6 +61,7 @@
         <item name="ThemePrimary">@color/cool_yellow</item>
         <item name="ThemeSecondary">@color/white</item>
         <item name="ThemeTextColor">@color/black</item>
+        <item name="ThemeTextColorSecondary">@color/white</item>
         <item name="ThemeIconColor">?attr/ThemeSecondary</item>
         <item name="ThemeIconColorSecondary">?attr/ThemePrimary</item>
         <item name="ThemeIconInactiveColor">?attr/ThemeTextColor</item>
@@ -73,6 +77,7 @@
         <item name="ThemePrimary">@color/cool_purple</item>
         <item name="ThemeSecondary">@color/white</item>
         <item name="ThemeTextColor">@color/black</item>
+        <item name="ThemeTextColorSecondary">@color/white</item>
         <item name="ThemeIconColor">?attr/ThemeSecondary</item>
         <item name="ThemeIconColorSecondary">?attr/ThemePrimary</item>
         <item name="ThemeIconInactiveColor">?attr/ThemeTextColor</item>
@@ -88,6 +93,7 @@
         <item name="ThemePrimary">@color/cool_pink</item>
         <item name="ThemeSecondary">@color/white</item>
         <item name="ThemeTextColor">@color/black</item>
+        <item name="ThemeTextColorSecondary">@color/white</item>
         <item name="ThemeIconColor">?attr/ThemeSecondary</item>
         <item name="ThemeIconColorSecondary">?attr/ThemePrimary</item>
         <item name="ThemeIconInactiveColor">?attr/ThemeTextColor</item>
@@ -103,6 +109,7 @@
         <item name="ThemePrimary">@color/black</item>
         <item name="ThemeSecondary">@color/black</item>
         <item name="ThemeTextColor">@color/white</item>
+        <item name="ThemeTextColorSecondary">@color/white</item>
         <item name="ThemeIconColor">@color/white</item>
         <item name="ThemeIconColorSecondary">@color/white</item>
         <item name="ThemeIconInactiveColor">?attr/ThemeTextColor</item>
@@ -118,6 +125,7 @@
         <item name="ThemePrimary">@color/cool_dark_purple</item>
         <item name="ThemeSecondary">@color/white</item>
         <item name="ThemeTextColor">@color/black</item>
+        <item name="ThemeTextColorSecondary">@color/white</item>
         <item name="ThemeIconColor">?attr/ThemeSecondary</item>
         <item name="ThemeIconColorSecondary">?attr/ThemePrimary</item>
         <item name="ThemeIconInactiveColor">?attr/ThemeTextColor</item>
@@ -133,6 +141,7 @@
         <item name="ThemePrimary">@color/cool_black</item>
         <item name="ThemeSecondary">@color/cool_black</item>
         <item name="ThemeTextColor">@color/white</item>
+        <item name="ThemeTextColorSecondary">@color/white</item>
         <item name="ThemeIconColor">@color/white</item>
         <item name="ThemeIconColorSecondary">@color/white</item>
         <item name="ThemeIconInactiveColor">?attr/ThemeTextColor</item>
@@ -148,6 +157,7 @@
         <item name="ThemePrimary">@color/deep_sky_blue</item>
         <item name="ThemeSecondary">@color/black</item>
         <item name="ThemeTextColor">@color/white</item>
+        <item name="ThemeTextColorSecondary">@color/white</item>
         <item name="ThemeIconColor">?attr/ThemeSecondary</item>
         <item name="ThemeIconColorSecondary">?attr/ThemePrimary</item>
         <item name="ThemeIconInactiveColor">?attr/ThemeTextColor</item>
@@ -163,6 +173,7 @@
         <item name="ThemePrimary">@color/cool_brown</item>
         <item name="ThemeSecondary">@color/black</item>
         <item name="ThemeTextColor">@color/white</item>
+        <item name="ThemeTextColorSecondary">@color/white</item>
         <item name="ThemeIconColor">?attr/ThemeSecondary</item>
         <item name="ThemeIconColorSecondary">?attr/ThemePrimary</item>
         <item name="ThemeIconInactiveColor">?attr/ThemeTextColor</item>
@@ -178,6 +189,7 @@
         <item name="ThemePrimary">@color/cool_yellow</item>
         <item name="ThemeSecondary">@color/black</item>
         <item name="ThemeTextColor">@color/white</item>
+        <item name="ThemeTextColorSecondary">@color/white</item>
         <item name="ThemeIconColor">?attr/ThemeSecondary</item>
         <item name="ThemeIconColorSecondary">?attr/ThemePrimary</item>
         <item name="ThemeIconInactiveColor">?attr/ThemeTextColor</item>
@@ -193,6 +205,7 @@
         <item name="ThemePrimary">@color/cool_pink</item>
         <item name="ThemeSecondary">@color/black</item>
         <item name="ThemeTextColor">@color/white</item>
+        <item name="ThemeTextColorSecondary">@color/white</item>
         <item name="ThemeIconColor">?attr/ThemeSecondary</item>
         <item name="ThemeIconColorSecondary">?attr/ThemePrimary</item>
         <item name="ThemeIconInactiveColor">?attr/ThemeTextColor</item>
