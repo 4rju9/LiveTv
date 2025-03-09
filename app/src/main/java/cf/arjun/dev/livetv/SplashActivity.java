@@ -1,7 +1,5 @@
 package cf.arjun.dev.livetv;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -12,13 +10,12 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
@@ -99,7 +96,8 @@ public class SplashActivity extends AppCompatActivity {
                             }
                         },
                         error -> {
-                            Toast.makeText(this, "Something went wrong, Come back later!", Toast.LENGTH_LONG).show();
+                            String FETCH_URL = getString(R.string.getUrl);
+                            getList(FETCH_URL);
                         });
             } catch (Exception ignore) {}
         }

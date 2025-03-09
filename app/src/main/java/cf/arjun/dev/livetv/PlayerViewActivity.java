@@ -69,6 +69,7 @@ public class PlayerViewActivity extends AppCompatActivity {
     private void setupUIViews () {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         playerView = findViewById(R.id.playerView);
 
     }

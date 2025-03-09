@@ -5,22 +5,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
@@ -38,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Queue queue;
     public static JSONObject jsonData = null;
-    public static JSONArray MOST_POPULAR, TOP_AIRING;
+    public static JSONArray MOST_POPULAR = new JSONArray(), TOP_AIRING = new JSONArray();
     public static String MUSIC = "music";
     public static String SPORTS = "sports";
     public static String ENTERTAINMENT = "entertainment";
@@ -262,7 +260,9 @@ public class MainActivity extends AppCompatActivity {
 
                             }
 
-                        } catch (Exception ignore) {}
+                        } catch (Exception e) {
+                            Log.d("Arjun", e.getLocalizedMessage());
+                        }
 
                     });
         }
@@ -277,12 +277,7 @@ public class MainActivity extends AppCompatActivity {
                 )
                 .setPositiveButton("Update", (dialog1, which) -> {
                     try {
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                        intent.setData(Uri.parse(url));
-                        startActivity(intent);
-                        new Handler().postDelayed( () -> finish(), 2000);
+                        ApkDownloader.downloadAndInstallApk(this, url);
                     } catch(Exception e) {
                         Toast.makeText(getApplicationContext(), "Something went wrong.\nTry again later!", Toast.LENGTH_SHORT).show();
                     }
