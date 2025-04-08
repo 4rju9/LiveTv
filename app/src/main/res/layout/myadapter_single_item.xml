@@ -3,23 +3,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="400dp"
     app:cardBackgroundColor="?attr/ThemeSecondary"
     app:cardElevation="20dp"
     app:cardCornerRadius="40dp"
     app:flow_maxElementsWrap="@integer/material_motion_duration_long_2"
+    android:id="@+id/root"
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:clickable="false"
+        android:focusable="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
 
         <ImageView
             android:id="@+id/ivSingleItem"
+            android:clickable="false"
+            android:focusable="false"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="16:9"
@@ -31,6 +36,8 @@
 
         <ScrollView
             android:id="@+id/mainContainer"
+            android:clickable="false"
+            android:focusable="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
@@ -43,11 +50,15 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <LinearLayout
+                android:clickable="false"
+                android:focusable="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
+                    android:clickable="false"
+                    android:focusable="false"
                     android:id="@+id/tvTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -56,12 +67,16 @@
                     android:fontFamily="@font/poppins_med"/>
 
                 <LinearLayout
+                    android:clickable="false"
+                    android:focusable="false"
                     android:id="@+id/labelQuality"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone">
 
                     <TextView
+                        android:clickable="false"
+                        android:focusable="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -71,6 +86,8 @@
                         android:fontFamily="@font/poppins_light"/>
 
                     <TextView
+                        android:clickable="false"
+                        android:focusable="false"
                         android:id="@+id/tvQuality"
                         android:layout_gravity="center_vertical"
                         android:layout_width="0dp"
@@ -84,6 +101,8 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:clickable="false"
+                    android:focusable="false"
                     android:id="@+id/labelAudio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -91,6 +110,8 @@
                     android:visibility="gone">
 
                     <TextView
+                        android:clickable="false"
+                        android:focusable="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -100,6 +121,8 @@
                         android:fontFamily="@font/poppins_light"/>
 
                     <TextView
+                        android:clickable="false"
+                        android:focusable="false"
                         android:id="@+id/tvLang"
                         android:layout_gravity="center_vertical"
                         android:layout_width="0dp"
@@ -113,6 +136,8 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:clickable="false"
+                    android:focusable="false"
                     android:id="@+id/labelDuration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -120,6 +145,8 @@
                     android:visibility="gone">
 
                     <TextView
+                        android:clickable="false"
+                        android:focusable="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -129,6 +156,8 @@
                         android:fontFamily="@font/poppins_light"/>
 
                     <TextView
+                        android:clickable="false"
+                        android:focusable="false"
                         android:id="@+id/tvDuration"
                         android:layout_gravity="center_vertical"
                         android:layout_width="0dp"
@@ -142,6 +171,8 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:clickable="false"
+                    android:focusable="false"
                     android:id="@+id/labelType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -149,6 +180,8 @@
                     android:visibility="gone">
 
                     <TextView
+                        android:clickable="false"
+                        android:focusable="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -158,6 +191,8 @@
                         android:fontFamily="@font/poppins_light"/>
 
                     <TextView
+                        android:clickable="false"
+                        android:focusable="false"
                         android:id="@+id/tvType"
                         android:layout_gravity="center_vertical"
                         android:layout_width="0dp"
@@ -171,6 +206,8 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:clickable="false"
+                    android:focusable="false"
                     android:id="@+id/labelEpisodes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -178,6 +215,8 @@
                     android:visibility="gone">
 
                     <TextView
+                        android:clickable="false"
+                        android:focusable="false"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -187,6 +226,8 @@
                         android:fontFamily="@font/poppins_light"/>
 
                     <TextView
+                        android:clickable="false"
+                        android:focusable="false"
                         android:id="@+id/labelSubs"
                         android:visibility="gone"
                         android:layout_width="wrap_content"
@@ -199,6 +240,8 @@
                         android:fontFamily="@font/poppins_light"/>
 
                     <TextView
+                        android:clickable="false"
+                        android:focusable="false"
                         android:id="@+id/tvSubs"
                         android:visibility="gone"
                         android:layout_gravity="center_vertical"
@@ -210,6 +253,8 @@
                         android:fontFamily="@font/poppins_light"/>
 
                     <TextView
+                        android:clickable="false"
+                        android:focusable="false"
                         android:id="@+id/labelDubs"
                         android:visibility="gone"
                         android:layout_width="wrap_content"
@@ -222,6 +267,8 @@
                         android:fontFamily="@font/poppins_light"/>
 
                     <TextView
+                        android:clickable="false"
+                        android:focusable="false"
                         android:id="@+id/tvDubs"
                         android:visibility="gone"
                         android:layout_gravity="center_vertical"

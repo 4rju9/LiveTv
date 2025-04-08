@@ -17,6 +17,8 @@ import com.android.volley.Request;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cf.arjun.dev.livetv.repository.Queue;
+
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
@@ -32,7 +34,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splash_activity);
 
         queue = Queue.getInstance(SplashActivity.this);
-        fetchAnimeData();
+        String FETCH_URL = getString(R.string.getUrl);
+        getList(FETCH_URL);
 
     }
 
@@ -65,41 +68,21 @@ public class SplashActivity extends AppCompatActivity {
                     response -> {
                         try {
                             MainActivity.jsonData = new JSONObject(response);
+                            MainActivity.jsonAnimeData = MainActivity.jsonData.getJSONObject("anime");
+                            MainActivity.ANIME_BASE_URL = MainActivity.jsonAnimeData.getString("base");
+                            MainActivity.jsonAnimeData = MainActivity.jsonAnimeData.getJSONObject("data");
+                            MainActivity.MOST_POPULAR = MainActivity.jsonAnimeData.getJSONArray("mostPopularAnimes");
+                            MainActivity.TOP_AIRING = MainActivity.jsonAnimeData.getJSONArray("topAiringAnimes");
+                            MainActivity.NEW_EPISODE_RELEASES = MainActivity.jsonAnimeData.getJSONArray("latestEpisodeAnimes");
+                            MainActivity.MOST_FAVORITES = MainActivity.jsonAnimeData.getJSONArray("mostFavoriteAnimes");
                             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
-                        } catch (JSONException ignore) {}
+                        } catch (JSONException error) {
+                            Toast.makeText(getApplicationContext(), "Something went wrong. Try again later!", Toast.LENGTH_SHORT).show();
+                            Log.d("x4rju9", error.getLocalizedMessage());
+                        }
                     });
-        }
-    }
-
-    private void fetchAnimeData () {
-        String base_url = getString(R.string.searchAnimeUrl);
-        if (queue != null) {
-            try {
-                queue.makeRequest(
-                        Request.Method.GET,
-                        base_url + "/api/v2/hianime/home",
-                        response -> {
-                            try {
-                                JSONObject result = new JSONObject(response);
-                                if (result.getBoolean("success")) {
-                                    result = result.getJSONObject("data");
-                                    MainActivity.MOST_POPULAR = result.getJSONArray("mostPopularAnimes");
-                                    MainActivity.TOP_AIRING = result.getJSONArray("topAiringAnimes");
-                                } else Log.d("Arjun", "Something went wrong!");
-                            } catch (JSONException error) {
-                                Toast.makeText(this, "Something went wrong, " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                            } finally {
-                                String FETCH_URL = getString(R.string.getUrl);
-                                getList(FETCH_URL);
-                            }
-                        },
-                        error -> {
-                            String FETCH_URL = getString(R.string.getUrl);
-                            getList(FETCH_URL);
-                        });
-            } catch (Exception ignore) {}
         }
     }
 

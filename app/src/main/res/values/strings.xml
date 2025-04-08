@@ -18,9 +18,8 @@
     // jsonData
     <string name="getUrl"><![CDATA[https://livetv.4rju9.workers.dev/livetv/fetch]]></string>
     <string name="fetchUrl"><![CDATA[https://livetv.4rju9.workers.dev/livetv/update]]></string>
-    <string name="searchAnimeUrl"><![CDATA[https://aniwatch-api-sp3v.onrender.com]]></string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tv_search_anime">Search anime</string>
+    <string name="tv_search_episode">Search episode..</string>
+    <string name="tv_show_newest">Show Newest</string>
+    <string name="tv_show_oldest">Show Oldest</string>
 </resources>

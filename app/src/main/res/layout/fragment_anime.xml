@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/ThemeSecondary"
-    tools:context=".AnimeFragment">
+    tools:context=".fragments.AnimeFragment">
 
     <ScrollView
         android:id="@+id/animeContainer"
@@ -43,6 +43,32 @@
                 app:layout_constraintTop_toBottomOf="@id/tvMostPopular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                tools:itemCount="1"
+                tools:listitem="@layout/myadapter_single_item" />
+
+            <TextView
+                android:id="@+id/tvNewEpisodeReleases"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New Episode Releases"
+                android:textColor="?attr/ThemeTextColor"
+                android:textSize="25sp"
+                android:paddingTop="16dp"
+                android:textStyle="bold|italic"
+                app:layout_constraintTop_toBottomOf="@id/rvMostPopular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvNewEpisodeReleases"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintTop_toBottomOf="@id/tvNewEpisodeReleases"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:itemCount="1"
                 tools:listitem="@layout/myadapter_single_item" />
 
             <TextView
@@ -54,7 +80,7 @@
                 android:textSize="25sp"
                 android:paddingTop="16dp"
                 android:textStyle="bold|italic"
-                app:layout_constraintTop_toBottomOf="@id/rvMostPopular"
+                app:layout_constraintTop_toBottomOf="@id/rvNewEpisodeReleases"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -67,6 +93,32 @@
                 app:layout_constraintTop_toBottomOf="@id/tvTopAiring"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                tools:itemCount="1"
+                tools:listitem="@layout/myadapter_single_item" />
+
+            <TextView
+                android:id="@+id/tvMostFavorites"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Most Favorites"
+                android:textColor="?attr/ThemeTextColor"
+                android:textSize="25sp"
+                android:paddingTop="16dp"
+                android:textStyle="bold|italic"
+                app:layout_constraintTop_toBottomOf="@id/rvTopAiring"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMostFavorites"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintTop_toBottomOf="@id/tvMostFavorites"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:itemCount="1"
                 tools:listitem="@layout/myadapter_single_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

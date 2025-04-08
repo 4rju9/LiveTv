@@ -52,7 +52,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sub Servers:"
+            android:text="Sub:"
             android:textStyle="bold"
             android:textSize="14sp"
             android:textColor="?attr/ThemeIconColor"
@@ -79,7 +79,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dub Servers:"
+            android:text="Dub:"
             android:textStyle="bold"
             android:textSize="14sp"
             android:textColor="?attr/ThemeIconColor"

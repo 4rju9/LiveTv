@@ -31,12 +31,25 @@ import org.json.JSONObject;
 import java.util.concurrent.Executors;
 
 import cf.arjun.dev.livetv.databinding.ThemeViewBinding;
+import cf.arjun.dev.livetv.fragments.AnimeFragment;
+import cf.arjun.dev.livetv.fragments.EntertainmentFragment;
+import cf.arjun.dev.livetv.fragments.MusicFragment;
+import cf.arjun.dev.livetv.fragments.NewsFragment;
+import cf.arjun.dev.livetv.fragments.SportsFragment;
+import cf.arjun.dev.livetv.repository.ApkDownloader;
+import cf.arjun.dev.livetv.repository.Queue;
 
 public class MainActivity extends AppCompatActivity {
 
     private Queue queue;
     public static JSONObject jsonData = null;
-    public static JSONArray MOST_POPULAR = new JSONArray(), TOP_AIRING = new JSONArray();
+    public static JSONObject jsonAnimeData = null;
+    public static JSONArray MOST_POPULAR = new JSONArray(),
+            TOP_AIRING = new JSONArray(),
+            NEW_EPISODE_RELEASES = new JSONArray(),
+            MOST_FAVORITES = new JSONArray(),
+            TOP_TV_SERIES = new JSONArray();
+    public static String ANIME_BASE_URL;
     public static String MUSIC = "music";
     public static String SPORTS = "sports";
     public static String ENTERTAINMENT = "entertainment";
@@ -191,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(searchBar.getWindowToken(), 0);
             }
         };
-        handler.postDelayed(runnable, 650);
+        handler.postDelayed(runnable, 1000);
     }
 
     private void setupBottomBar () {
