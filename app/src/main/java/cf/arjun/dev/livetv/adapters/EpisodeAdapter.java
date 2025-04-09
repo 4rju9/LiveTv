@@ -68,6 +68,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
             holder.llRaw.setVisibility(View.GONE);
 
             String finalEpisodeId = episodeId;
+            JSONObject finalEpisode = episode;
             holder.itemView.setOnClickListener(v -> {
                 holder.progressBar.setVisibility(View.VISIBLE);
 
@@ -87,19 +88,19 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
                                         if (sub.length() > 0) {
                                             holder.llSub.setVisibility(View.VISIBLE);
                                             holder.rvSub.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                                            holder.rvSub.setAdapter(new ServerAdapter(context, sub, finalEpisodeId, "sub"));
+                                            holder.rvSub.setAdapter(new ServerAdapter(context, sub, finalEpisodeId, "sub", finalEpisode.getString("title")));
                                         }
 
                                         if (dub.length() > 0) {
                                             holder.llDub.setVisibility(View.VISIBLE);
                                             holder.rvDub.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                                            holder.rvDub.setAdapter(new ServerAdapter(context, dub, finalEpisodeId, "dub")); // Fix applied
+                                            holder.rvDub.setAdapter(new ServerAdapter(context, dub, finalEpisodeId, "dub", finalEpisode.getString("title"))); // Fix applied
                                         }
 
                                         if (raw.length() > 0) {
                                             holder.llRaw.setVisibility(View.VISIBLE);
                                             holder.rvRaw.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                                            holder.rvRaw.setAdapter(new ServerAdapter(context, raw, finalEpisodeId, "raw")); // Fix applied
+                                            holder.rvRaw.setAdapter(new ServerAdapter(context, raw, finalEpisodeId, "raw", finalEpisode.getString("title"))); // Fix applied
                                         }
 
                                     } catch (JSONException ignore) {

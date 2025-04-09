@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/speedMinus"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/minus_icon"
+        android:tint="@color/white"/>
+
+    <TextView
+        android:id="@+id/speedText"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="1.5"
+        android:text="@string/speed"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:gravity="center"/>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/speedPlus"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_weight="1"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/plus_icon"
+        android:tint="@color/white"/>
+
+</LinearLayout>

@@ -31,16 +31,16 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
 
     private Context context;
     private JSONArray servers;
-    private String episodeId;
-    private String serverCategory;
+    private String episodeId, serverCategory, title;
     private ProgressDialog dialog;
 
-    public ServerAdapter(Context context, JSONArray servers, String episodeId, String serverCategory) {
+    public ServerAdapter(Context context, JSONArray servers, String episodeId, String serverCategory, String title) {
         this.context = context;
         this.dialog = new ProgressDialog(context);
         this.servers = servers;
         this.episodeId = episodeId;
         this.serverCategory = serverCategory;
+        this.title = title;
     }
 
     @NonNull
@@ -140,6 +140,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
                 }
 
                 intent.putExtra("url", url);
+                intent.putExtra("title", this.title);
                 intent.setAction("HLS");
                 context.startActivity(intent);
 

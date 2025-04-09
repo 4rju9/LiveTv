@@ -89,6 +89,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
                 String url = object.getString("url");
                 intent.putExtra("url", url);
+                intent.putExtra("title", object.getString("title"));
 
                 boolean hasDrm = object.getBoolean("hasDrm");
                 if (hasDrm) {

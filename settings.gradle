@@ -1,9 +1,9 @@
 pluginManagement {
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
-        maven { url = uri("https://dl.bintray.com/kotlin/kotlin-eap") }
+        gradlePluginPortal()
+        maven { url 'https://www.jitpack.io' }
     }
 }
 dependencyResolutionManagement {
@@ -11,7 +11,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://dl.bintray.com/kotlin/kotlin-eap") }
+        maven { url 'https://www.jitpack.io' }
     }
 }
 rootProject.name = "Live TV"

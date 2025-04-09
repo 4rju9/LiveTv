@@ -4,13 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -283,11 +286,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void showUpdateAppDialog (String url, String current, String latest, String notes) {
 
-        final AlertDialog dialog = new AlertDialog.Builder(this)
+        final AlertDialog dialog = new MaterialAlertDialogBuilder(this, R.style.alertDialog)
                 .setTitle("Product update!")
                 .setMessage("A new version is available.\nWould you like to update now?\n" +
                         "(Current: " + current + " Latest: " + latest + ")" + notes
                 )
+                .setBackground(new ColorDrawable(resolveAttrColor(R.attr.ThemePrimary)))
                 .setPositiveButton("Update", (dialog1, which) -> {
                     try {
                         ApkDownloader.downloadAndInstallApk(this, url);
@@ -296,6 +300,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resolveAttrColor(R.attr.ThemeTextColorSecondary));
         dialog.setCancelable(false);
 
     }
@@ -340,6 +345,13 @@ public class MainActivity extends AppCompatActivity {
         }
         queue = null;
         jsonData = null;
+    }
+
+    private int resolveAttrColor(int attrResId) {
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = getTheme();
+        theme.resolveAttribute(attrResId, typedValue, true);
+        return typedValue.data;
     }
 
 }

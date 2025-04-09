@@ -22,4 +22,28 @@
     <string name="tv_search_episode">Search episode..</string>
     <string name="tv_show_newest">Show Newest</string>
     <string name="tv_show_oldest">Show Oldest</string>
+    <string name="tv_lock">Lock Button</string>
+
+    <string name="tv_video_name">Video Name</string>
+    <string name="tv_duration">00:00</string>
+    <string name="tv_loading">Loading</string>
+    <string name="tv_semi_colon">:</string>
+    <string name="tv_back_button">Back Button</string>
+
+    // For Custom Controls Additional
+    <string name="tv_menu">Menu</string>
+    <string name="tv_repeat_button">Repeat Button</string>
+    <string name="tv_previous_button">Previous Button</string>
+    <string name="tv_next_button">Next Button</string>
+    <string name="tv_fullscreen_button">Fullscreen Button</string>
+    <string name="tv_play_button">Play Button</string>
+
+    // For Menu
+    <string name="audio_track">Audio Track</string>
+    <string name="subtitles">Subtitles</string>
+    <string name="booster">Booster</string>
+    <string name="speed">Speed</string>
+    <string name="tv_rotation_button">rotation button</string>
+    <string name="sleep_timer">Sleep Timer</string>
+    <string name="quality_track">Quality Track</string>
 </resources>

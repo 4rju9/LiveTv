@@ -32,7 +32,7 @@ public class AnimeFragment extends Fragment {
     private MyAdapter adapterMP, adapterTA, adapterNER, adapterMF, adapterAnime;
     private Queue queue;
     private int currentPage = 1;
-    private ProgressDialog dialog;
+    private ProgressDialog searchQueryDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +48,7 @@ public class AnimeFragment extends Fragment {
             rvMostFavorites = view.findViewById(R.id.rvMostFavorites);
             rvAnime = view.findViewById(R.id.recyclerViewAnime);
             animeContainer = view.findViewById(R.id.animeContainer);
-            dialog = new ProgressDialog(getContext());
+            searchQueryDialog = new ProgressDialog(getContext());
             queue = Queue.getInstance(getContext());
             setupRecyclerView();
 
@@ -109,15 +109,17 @@ public class AnimeFragment extends Fragment {
     }
 
     public void searchQuery (String query) {
-        if (query.isEmpty()) {
-            dialog.dismiss();
-            initRecyclerViews(false);
-        } else {
-            dialog.setTitle("Searching for " + query + " !!");
-            dialog.setMessage("Please wait....");
-            dialog.show();
-            getAnimeList(MainActivity.ANIME_BASE_URL, query, currentPage);
-        }
+        try {
+            if (query.isEmpty()) {
+                searchQueryDialog.dismiss();
+                initRecyclerViews(false);
+            } else {
+                searchQueryDialog.setTitle("Searching for " + query + " !!");
+                searchQueryDialog.setMessage("Please wait....");
+                searchQueryDialog.show();
+                getAnimeList(MainActivity.ANIME_BASE_URL, query, currentPage);
+            }
+        } catch (Exception ignore) {}
     }
 
     private void getAnimeList (String base_url, String query, int page) {
@@ -127,7 +129,7 @@ public class AnimeFragment extends Fragment {
                         Request.Method.GET,
                         String.format(MainActivity.ANIME_BASE_URL + "/api/v2/hianime/search?q=%s&page=%d", query.trim().replace(" ", "+"), page),
                         response -> {
-                            dialog.dismiss();
+                            searchQueryDialog.dismiss();
                             try {
                                 JSONObject result = new JSONObject(response);
                                 if (result.getBoolean("success")) {
@@ -141,7 +143,7 @@ public class AnimeFragment extends Fragment {
                             }
                         },
                         error -> {
-                            dialog.dismiss();
+                            searchQueryDialog.dismiss();
                             Toast.makeText(getContext(), "Something went wrong, Come back later!", Toast.LENGTH_LONG).show();
                         });
             } catch (Exception ignore) {}
@@ -175,7 +177,7 @@ public class AnimeFragment extends Fragment {
                             }
                         },
                         error -> {
-                            dialog.dismiss();
+                            searchQueryDialog.dismiss();
                             Toast.makeText(requireContext(), "Something went wrong, " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         });
             } catch (Exception ignore) {}
