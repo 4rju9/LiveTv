@@ -70,6 +70,7 @@ public class SplashActivity extends AppCompatActivity {
                             MainActivity.jsonData = new JSONObject(response);
                             MainActivity.jsonAnimeData = MainActivity.jsonData.getJSONObject("anime");
                             MainActivity.ANIME_BASE_URL = MainActivity.jsonAnimeData.getString("base");
+                            MainActivity.ANIME_FALLBACK_SOURCE = MainActivity.jsonAnimeData.getString("fallbackSource");
                             MainActivity.jsonAnimeData = MainActivity.jsonAnimeData.getJSONObject("data");
                             MainActivity.MOST_POPULAR = MainActivity.jsonAnimeData.getJSONArray("mostPopularAnimes");
                             MainActivity.TOP_AIRING = MainActivity.jsonAnimeData.getJSONArray("topAiringAnimes");

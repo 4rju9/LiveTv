@@ -39,7 +39,7 @@ import cf.arjun.dev.livetv.fragments.EntertainmentFragment;
 import cf.arjun.dev.livetv.fragments.MusicFragment;
 import cf.arjun.dev.livetv.fragments.NewsFragment;
 import cf.arjun.dev.livetv.fragments.SportsFragment;
-import cf.arjun.dev.livetv.repository.ApkDownloader;
+import cf.arjun.dev.livetv.others.UpdateApk;
 import cf.arjun.dev.livetv.repository.Queue;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             MOST_FAVORITES = new JSONArray(),
             TOP_TV_SERIES = new JSONArray();
     public static String ANIME_BASE_URL;
+    public static String ANIME_FALLBACK_SOURCE;
     public static String MUSIC = "music";
     public static String SPORTS = "sports";
     public static String ENTERTAINMENT = "entertainment";
@@ -294,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
                 .setBackground(new ColorDrawable(resolveAttrColor(R.attr.ThemePrimary)))
                 .setPositiveButton("Update", (dialog1, which) -> {
                     try {
-                        ApkDownloader.downloadAndInstallApk(this, url);
+                        UpdateApk.downloadApk(this, url);
                     } catch(Exception e) {
                         Toast.makeText(getApplicationContext(), "Something went wrong.\nTry again later!", Toast.LENGTH_SHORT).show();
                     }

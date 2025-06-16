@@ -112,9 +112,9 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
         try {
             JSONObject object = new JSONObject(response);
             object = object.getJSONObject("data");
+            Intent intent = new Intent(context, PlayerViewActivity.class);
             if (object.getJSONArray("sources").length() > 0) {
 
-                Intent intent = new Intent(context, PlayerViewActivity.class);
                 String url = object.getJSONArray("sources").getJSONObject(0).getString("url");
                 JSONArray tracks = object.getJSONArray("tracks");
 
@@ -148,6 +148,13 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
                 dialog.dismiss();
                 Toast.makeText(context, "No sources found!", Toast.LENGTH_SHORT).show();
                 Log.d("Arjun", "No sources found!");
+
+                // Fallback to Default Source
+                intent.putExtra("url", MainActivity.ANIME_FALLBACK_SOURCE);
+                intent.putExtra("title", this.title);
+                intent.setAction("HLS");
+                context.startActivity(intent);
+
             }
         } catch (JSONException e) { Log.d("Arjun", Objects.requireNonNull(e.getMessage())); }
     }
