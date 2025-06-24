@@ -38,7 +38,7 @@ public class EpisodeDialog {
             }
 
             JSONObject response = new JSONObject(jsonResponse);
-            JSONObject data = response.getJSONObject("data");
+            JSONObject data = response.getJSONObject("results");
             JSONArray original = data.getJSONArray("episodes");
 
             // Inflate custom layout

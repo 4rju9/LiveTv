@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.bumptech.glide.Glide;
-import com.google.android.material.dialog.MaterialDialogs;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,15 +112,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 holder.labelEpisodes.setVisibility(View.VISIBLE);
                 holder.labelQuality.setVisibility(View.GONE);
                 holder.labelAudio.setVisibility(View.GONE);
-                holder.title.setText(object.getString("name"));
-                holder.type.setText(object.getString("type"));
+                holder.title.setText(object.getString("title"));
 
                 if (!isAnime) {
                     holder.labelDuration.setVisibility(View.VISIBLE);
                     holder.duration.setText(object.getString("duration"));
                 }
 
-                JSONObject episodes = object.getJSONObject("episodes");
+                JSONObject episodes = object.getJSONObject("tvInfo");
+                holder.type.setText(episodes.getString("showType"));
                 String subs = episodes.getString("sub");
                 String dubs = episodes.getString("dub");
                 if (subs != null && !subs.isEmpty() && !subs.contentEquals("null")) {
@@ -138,7 +137,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 anime_id = object.getString("id");
 
             } catch (JSONException e) {
-                Log.d("Arjun", e.getMessage());
+                Log.d("x4rju9", e.getMessage());
             }
         }
 
@@ -196,7 +195,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             try {
                 queue.makeRequest(
                         Request.Method.GET,
-                        String.format(MainActivity.ANIME_BASE_URL + "/api/v2/hianime/anime/%s/episodes", id),
+                        String.format(MainActivity.ANIME_BASE_URL + "/api/episodes/%s", id),
                         response -> {
                             dialog.dismiss();
                             EpisodeDialog.show(context, response, poster);

@@ -72,10 +72,10 @@ public class SplashActivity extends AppCompatActivity {
                             MainActivity.ANIME_BASE_URL = MainActivity.jsonAnimeData.getString("base");
                             MainActivity.ANIME_FALLBACK_SOURCE = MainActivity.jsonAnimeData.getString("fallbackSource");
                             MainActivity.jsonAnimeData = MainActivity.jsonAnimeData.getJSONObject("data");
-                            MainActivity.MOST_POPULAR = MainActivity.jsonAnimeData.getJSONArray("mostPopularAnimes");
-                            MainActivity.TOP_AIRING = MainActivity.jsonAnimeData.getJSONArray("topAiringAnimes");
-                            MainActivity.NEW_EPISODE_RELEASES = MainActivity.jsonAnimeData.getJSONArray("latestEpisodeAnimes");
-                            MainActivity.MOST_FAVORITES = MainActivity.jsonAnimeData.getJSONArray("mostFavoriteAnimes");
+                            MainActivity.MOST_POPULAR = MainActivity.jsonAnimeData.getJSONArray("mostPopular");
+                            MainActivity.TOP_AIRING = MainActivity.jsonAnimeData.getJSONArray("topAiring");
+                            MainActivity.NEW_EPISODE_RELEASES = MainActivity.jsonAnimeData.getJSONArray("latestCompleted");
+                            MainActivity.MOST_FAVORITES = MainActivity.jsonAnimeData.getJSONArray("mostFavorite");
                             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();

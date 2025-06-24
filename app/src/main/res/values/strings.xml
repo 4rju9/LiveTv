@@ -44,6 +44,7 @@
     <string name="booster">Booster</string>
     <string name="speed">Speed</string>
     <string name="tv_rotation_button">rotation button</string>
+    <string name="tv_skip_button">Skip Button</string>
     <string name="sleep_timer">Sleep Timer</string>
     <string name="quality_track">Quality Track</string>
 </resources>

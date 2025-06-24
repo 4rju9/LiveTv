@@ -33,6 +33,7 @@ public class AnimeFragment extends Fragment {
     private Queue queue;
     private int currentPage = 1;
     private ProgressDialog searchQueryDialog;
+    private static boolean fetchAnimeDetails = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +53,11 @@ public class AnimeFragment extends Fragment {
             queue = Queue.getInstance(getContext());
             setupRecyclerView();
 
+        }
+
+        if (fetchAnimeDetails) {
+            fetchAnimeData();
+            fetchAnimeDetails = false;
         }
 
         return view;
@@ -117,29 +123,30 @@ public class AnimeFragment extends Fragment {
                 searchQueryDialog.setTitle("Searching for " + query + " !!");
                 searchQueryDialog.setMessage("Please wait....");
                 searchQueryDialog.show();
-                getAnimeList(MainActivity.ANIME_BASE_URL, query, currentPage);
+                getAnimeList(query, currentPage);
             }
         } catch (Exception ignore) {}
     }
 
-    private void getAnimeList (String base_url, String query, int page) {
+    private void getAnimeList (String query, int page) {
         if (queue != null) {
             try {
                 queue.makeRequest(
                         Request.Method.GET,
-                        String.format(MainActivity.ANIME_BASE_URL + "/api/v2/hianime/search?q=%s&page=%d", query.trim().replace(" ", "+"), page),
+                        String.format(MainActivity.ANIME_BASE_URL + "/api/search?keyword=%s&page=%d", query.trim().replace(" ", "%20"), page),
                         response -> {
                             searchQueryDialog.dismiss();
                             try {
                                 JSONObject result = new JSONObject(response);
                                 if (result.getBoolean("success")) {
-                                    result = result.getJSONObject("data");
-                                    searchedAnimeList = result.getJSONArray("animes");
+                                    result = result.getJSONObject("results");
+                                    searchedAnimeList = result.getJSONArray("data");
                                     initRecyclerViews(true);
                                     adapterAnime.setData(searchedAnimeList);
-                                } else Log.d("Arjun", "Something went wrong!");
+                                }
                             } catch (JSONException error) {
                                 Toast.makeText(getContext(), "Something went wrong, " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.d("x4rju9", "Something went wrong, " + error.getMessage());
                             }
                         },
                         error -> {
@@ -155,13 +162,13 @@ public class AnimeFragment extends Fragment {
             try {
                 queue.makeRequest(
                         Request.Method.GET,
-                        MainActivity.ANIME_BASE_URL + "/api/v2/hianime/home",
+                        MainActivity.ANIME_BASE_URL + "/api/",
                         response -> {
                             try {
                                 JSONObject result = new JSONObject(response);
                                 if (result.getBoolean("success")) {
                                     MainActivity.jsonAnimeData = result;
-                                    result = result.getJSONObject("data");
+                                    result = result.getJSONObject("results");
                                     MainActivity.MOST_POPULAR = result.getJSONArray("mostPopularAnimes");
                                     MainActivity.TOP_AIRING = result.getJSONArray("topAiringAnimes");
                                     MainActivity.TOP_AIRING = result.getJSONArray("topAiringAnimes");
@@ -171,7 +178,7 @@ public class AnimeFragment extends Fragment {
                                     adapterTA.setData(MainActivity.TOP_AIRING);
                                     adapterNER.setData(MainActivity.NEW_EPISODE_RELEASES);
                                     adapterMF.setData(MainActivity.MOST_FAVORITES);
-                                } else Log.d("Arjun", "Something went wrong!");
+                                } else Log.d("x4rju9", "Something went wrong!");
                             } catch (JSONException error) {
                                 Toast.makeText(getActivity(), "Something went wrong, " + error.getMessage(), Toast.LENGTH_SHORT).show();
                             }

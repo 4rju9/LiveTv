@@ -21,8 +21,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cf.arjun.dev.livetv.MainActivity;
-import cf.arjun.dev.livetv.repository.Queue;
 import cf.arjun.dev.livetv.R;
+import cf.arjun.dev.livetv.repository.Queue;
 
 public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHolder> {
 
@@ -54,12 +54,12 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
         String episodeId = "";
         try {
             episode = episodes.getJSONObject(position);
-            episodeId = episode.getString("episodeId");
-            String text1 = "Episode: #" + episode.getInt("number");
+            episodeId = episode.getString("id");
+            String text1 = "Episode: #" + episode.getInt("episode_no");
             holder.number.setText(text1);
             String text2 = "Title: " + episode.getString("title");
             holder.title.setText(text2);
-            String text3 = "Filler: " + (episode.getBoolean("isFiller") ? "Yes" : "No");
+            String text3 = "Filler: " + (episode.getBoolean("filler") ? "Yes" : "No");
             holder.isFiller.setText(text3);
 
             // Hide initially to prevent issues
@@ -76,35 +76,54 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
                     try {
                         queue.makeRequest(
                                 Request.Method.GET,
-                                String.format(MainActivity.ANIME_BASE_URL + "/api/v2/hianime/episode/servers?animeEpisodeId=%s", finalEpisodeId),
+                                String.format(MainActivity.ANIME_BASE_URL + "/api/servers/%s", finalEpisodeId),
                                 response -> {
                                     holder.progressBar.setVisibility(View.GONE);
                                     try {
-                                        JSONObject object = new JSONObject(response).getJSONObject("data");
-                                        JSONArray sub = object.getJSONArray("sub");
-                                        JSONArray dub = object.getJSONArray("dub");
-                                        JSONArray raw = object.getJSONArray("raw");
+                                        JSONObject responseObject = new JSONObject(response);
+                                        JSONArray results = responseObject.getJSONArray("results");
 
-                                        if (sub.length() > 0) {
+                                        JSONArray subArray = new JSONArray();
+                                        JSONArray dubArray = new JSONArray();
+                                        JSONArray rawArray = new JSONArray();
+
+                                        for (int i = 0; i < results.length(); i++) {
+                                            JSONObject item = results.getJSONObject(i);
+                                            String type = item.getString("type");
+
+                                            JSONObject serverObj = new JSONObject();
+                                            serverObj.put("serverId", item.getInt("server_id"));
+                                            serverObj.put("serverName", item.getString("serverName"));
+
+                                            if ("sub".equals(type)) {
+                                                subArray.put(serverObj);
+                                            } else if ("dub".equals(type)) {
+                                                dubArray.put(serverObj);
+                                            } else if ("raw".equals(type)) {
+                                                rawArray.put(serverObj);
+                                            }
+                                        }
+
+                                        // Existing visibility and adapter setup
+                                        if (subArray.length() > 0) {
                                             holder.llSub.setVisibility(View.VISIBLE);
                                             holder.rvSub.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                                            holder.rvSub.setAdapter(new ServerAdapter(context, sub, finalEpisodeId, "sub", finalEpisode.getString("title")));
+                                            holder.rvSub.setAdapter(new ServerAdapter(context, subArray, finalEpisodeId, "sub", finalEpisode.getString("title")));
                                         }
 
-                                        if (dub.length() > 0) {
+                                        if (dubArray.length() > 0) {
                                             holder.llDub.setVisibility(View.VISIBLE);
                                             holder.rvDub.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                                            holder.rvDub.setAdapter(new ServerAdapter(context, dub, finalEpisodeId, "dub", finalEpisode.getString("title"))); // Fix applied
+                                            holder.rvDub.setAdapter(new ServerAdapter(context, dubArray, finalEpisodeId, "dub", finalEpisode.getString("title")));
                                         }
 
-                                        if (raw.length() > 0) {
+                                        if (rawArray.length() > 0) {
                                             holder.llRaw.setVisibility(View.VISIBLE);
                                             holder.rvRaw.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                                            holder.rvRaw.setAdapter(new ServerAdapter(context, raw, finalEpisodeId, "raw", finalEpisode.getString("title"))); // Fix applied
+                                            holder.rvRaw.setAdapter(new ServerAdapter(context, rawArray, finalEpisodeId, "raw", finalEpisode.getString("title")));
                                         }
 
-                                    } catch (JSONException ignore) {
-                                    }
+                                    } catch (JSONException error) { Log.d("x4rju9", "Error In Episode Adapter:\n" + error.getMessage()); }
                                 },
                                 error -> {
                                     holder.progressBar.setVisibility(View.GONE);
@@ -117,7 +136,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.ViewHold
             });
 
         } catch (JSONException e) {
-            Log.d("Arjun", e.getMessage());
+            Log.d("x4rju9", e.getMessage());
         }
     }
 

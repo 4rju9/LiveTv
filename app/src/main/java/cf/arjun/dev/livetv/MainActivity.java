@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         Executors.newFixedThreadPool(1).execute(() -> {
             String FETCH_URL = MainActivity.this.getString(R.string.fetchUrl);
             checkForUpdate(FETCH_URL);
+
         });
         setupUIViews();
         setupMenuBar();
@@ -278,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                         } catch (Exception e) {
-                            Log.d("Arjun", e.getLocalizedMessage());
+                            Log.d("x4rju9", e.getLocalizedMessage());
                         }
 
                     });

@@ -1,8 +1,6 @@
 package cf.arjun.dev.livetv;
 
 import android.annotation.SuppressLint;
-import android.app.AppOpsManager;
-import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,8 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Process;
-import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -25,23 +21,22 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
-import com.github.vkay94.dtpv.DoubleTapPlayerView;
 import com.github.vkay94.dtpv.youtube.YouTubeOverlay;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Tracks;
 import com.google.android.exoplayer2.drm.DefaultDrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaDrm;
@@ -49,10 +44,9 @@ import com.google.android.exoplayer2.drm.LocalMediaDrmCallback;
 import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroup;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
+import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionOverride;
 import com.google.android.exoplayer2.trackselection.TrackSelectionParameters;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
@@ -67,9 +61,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import cf.arjun.dev.livetv.databinding.ActivityPlayerViewBinding;
 import cf.arjun.dev.livetv.databinding.BoosterBinding;
@@ -88,10 +79,23 @@ public class PlayerViewActivity extends AppCompatActivity {
     private boolean playerState = true;
     private int currentMediaItem = 0;
     private long currentPosition = 0L;
-    private boolean hasSubtitles = false;
+    private boolean hasSubtitles = false, supportIntroOutro = false;
+    private int introStart = 0, introEnd = 0, outroStart = 0, outroEnd = 0;
+    private Handler skipHandler = new Handler();
+    private Runnable skipPositionChecker = new Runnable() {
+        @Override
+        public void run() {
+            if (exoPlayer != null && supportIntroOutro) {
+                long currentPos = exoPlayer.getCurrentPosition();
+                updateSkipVisibility(currentPos);
+            }
+            skipHandler.postDelayed(this, 1000);
+        }
+    };
     private String[] subtitleUrl, subtitleLabel;
     private ImageButton playPauseBtn, fullScreenBtn;
-    private TextView videoTitle;
+    private LinearLayout skip_controller;
+    private TextView videoTitle, skip_text;
     private boolean isFullscreen = false, isLocked = false;
     private static float speed = 1.0f;
     private ActivityPlayerViewBinding binding;
@@ -125,7 +129,6 @@ public class PlayerViewActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         playerView = findViewById(R.id.playerView);
         youTubeOverlay = findViewById(R.id.ytOverlay);
-        Log.d("x4rju9", "UI Initialized " + (youTubeOverlay == null));
 
     }
 
@@ -133,6 +136,8 @@ public class PlayerViewActivity extends AppCompatActivity {
         playPauseBtn = findViewById(R.id.play_pause_button);
         fullScreenBtn = findViewById(R.id.fullscreen_button);
         videoTitle = findViewById(R.id.video_title);
+        skip_controller = findViewById(R.id.skip_controller);
+        skip_text = findViewById(R.id.skip_text);
     }
 
     @Override
@@ -173,6 +178,13 @@ public class PlayerViewActivity extends AppCompatActivity {
                     subtitleUrl = intent.getStringArrayExtra("track_urls");
                     subtitleLabel = intent.getStringArrayExtra("track_labels");
                 }
+                if (intent.getBooleanExtra("supportIntroOutro", false)) {
+                    supportIntroOutro = true;
+                    introStart = intent.getIntExtra("introStart", 0)*1000;
+                    introEnd = intent.getIntExtra("introEnd", 0)*1000;
+                    outroStart = intent.getIntExtra("outroStart", 0)*1000;
+                    outroEnd = intent.getIntExtra("outroEnd", 0)*1000;
+                }
                 initializePlayer(intent.getStringExtra("url"), intent.getStringExtra("title"));
                 break;
             } case "DRM": {                String clearKey = intent.getStringExtra("k");
@@ -183,6 +195,9 @@ public class PlayerViewActivity extends AppCompatActivity {
                 Toast.makeText(this, "Empty Action " + intent.getAction(), Toast.LENGTH_SHORT).show();
             }
         }
+        if (supportIntroOutro) {
+            skipHandler.post(skipPositionChecker);
+        }
     }
 
     @Override
@@ -191,6 +206,7 @@ public class PlayerViewActivity extends AppCompatActivity {
         if (exoPlayer != null) {
             exoPlayer.pause();
         }
+        skipHandler.removeCallbacks(skipPositionChecker);
     }
 
     @Override
@@ -246,6 +262,16 @@ public class PlayerViewActivity extends AppCompatActivity {
         try {
             MediaItem media;
             if (hasSubtitles) {
+
+                DefaultHttpDataSource.Factory factory = new DefaultHttpDataSource.Factory();
+                factory.setDefaultRequestProperties(
+                        new HashMap<String, String>() {{
+                            put("Referer", "https://megacloud.blog/");
+                        }}
+                );
+
+                HlsMediaSource.Factory hlsFactory = new HlsMediaSource.Factory(factory);
+
                 List<MediaItem.SubtitleConfiguration> subTracks = new ArrayList<>();
 
                 for (int i = 0; i < subtitleUrl.length; i++) {
@@ -262,10 +288,15 @@ public class PlayerViewActivity extends AppCompatActivity {
                         .setUri(url)
                         .setSubtitleConfigurations(subTracks)
                         .build();
+
+                MediaSource mediaSource = hlsFactory.createMediaSource(media);
+                exoPlayer.setMediaSource(mediaSource);
+
             } else {
                 media = MediaItem.fromUri(url);
+                exoPlayer.setMediaItem(media);
             }
-            exoPlayer.setMediaItem(media);
+
             exoPlayer.seekTo(currentMediaItem, currentPosition);
 
             setTrackSelectionParameters();
@@ -274,6 +305,7 @@ public class PlayerViewActivity extends AppCompatActivity {
             exoPlayer.prepare();
             playVideo();
             initializePlayerUI();
+            playerView.setKeepScreenOn(true);
         } catch (Exception ignore) {}
 
     }
@@ -319,6 +351,7 @@ public class PlayerViewActivity extends AppCompatActivity {
             exoPlayer.prepare();
             playVideo();
             initializePlayerUI();
+            playerView.setKeepScreenOn(true);
 
         } catch (Exception ignore) {}
 
@@ -327,11 +360,13 @@ public class PlayerViewActivity extends AppCompatActivity {
     private void playVideo () {
         playPauseBtn.setImageResource(R.drawable.pause_icon);
         exoPlayer.play();
+        playerView.setKeepScreenOn(true);
     }
 
     private void pauseVideo () {
         playPauseBtn.setImageResource(R.drawable.play_icon);
         exoPlayer.pause();
+        playerView.setKeepScreenOn(false);
     }
 
     private void release () {
@@ -616,6 +651,10 @@ public class PlayerViewActivity extends AppCompatActivity {
 
         });
 
+        skip_controller.setVisibility(View.GONE);
+        skip_controller.setOnClickListener(v -> handleSkipAction());
+        skipHandler.post(skipPositionChecker);
+
     }
 
     private void doubleTapEnable () {
@@ -681,6 +720,38 @@ public class PlayerViewActivity extends AppCompatActivity {
         Resources.Theme theme = getTheme();
         theme.resolveAttribute(attrResId, typedValue, true);
         return typedValue.data;
+    }
+
+    private void updateSkipVisibility(long currentPos) {
+        if (currentPos >= introStart && currentPos <= introEnd) {
+            showSkipController("Skip Intro");
+        } else if (currentPos >= outroStart && currentPos <= outroEnd) {
+            showSkipController("Skip Outro");
+        } else {
+            hideSkipController();
+        }
+    }
+
+    private void showSkipController(String text) {
+        skip_controller.setVisibility(View.VISIBLE);
+        skip_text.setText(text);
+    }
+
+    private void hideSkipController() {
+        skip_controller.setVisibility(View.GONE);
+    }
+
+    private void handleSkipAction() {
+        if (exoPlayer == null) return;
+
+        long currentPos = exoPlayer.getCurrentPosition();
+
+        if (currentPos >= introStart && currentPos <= introEnd) {
+            exoPlayer.seekTo(introEnd + 1000);
+        } else if (currentPos >= outroStart && currentPos <= outroEnd) {
+            exoPlayer.seekTo(outroEnd + 1000);
+        }
+        hideSkipController();
     }
 
 

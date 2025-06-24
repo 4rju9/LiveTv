@@ -100,6 +100,44 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/skip_controller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/rounded_corner2"
+        android:backgroundTint="#42000000"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="20dp"
+        android:visibility="gone"
+        android:paddingEnd="10dp"
+        tools:ignore="RtlSymmetry"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/exo_progress">
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_skip"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="@string/tv_skip_button"
+            app:tint="@color/white"
+            android:layout_gravity="center"
+            tools:ignore="PrivateResource" />
+
+        <TextView
+            android:id="@+id/skip_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:singleLine="true"
+            android:gravity="center"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
     <com.google.android.exoplayer2.ui.DefaultTimeBar
         android:id="@id/exo_progress"
         android:layout_width="match_parent"
