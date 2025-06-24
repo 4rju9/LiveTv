@@ -43,6 +43,8 @@ import com.google.android.exoplayer2.drm.FrameworkMediaDrm;
 import com.google.android.exoplayer2.drm.LocalMediaDrmCallback;
 import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.MergingMediaSource;
+import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
@@ -58,6 +60,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -260,40 +263,50 @@ public class PlayerViewActivity extends AppCompatActivity {
         doubleTapEnable();
 
         try {
-            MediaItem media;
             if (hasSubtitles) {
 
-                DefaultHttpDataSource.Factory factory = new DefaultHttpDataSource.Factory();
-                factory.setDefaultRequestProperties(
+                DefaultHttpDataSource.Factory videoFactory = new DefaultHttpDataSource.Factory();
+                videoFactory.setDefaultRequestProperties(
                         new HashMap<String, String>() {{
                             put("Referer", "https://megacloud.blog/");
                         }}
                 );
 
-                HlsMediaSource.Factory hlsFactory = new HlsMediaSource.Factory(factory);
-
-                List<MediaItem.SubtitleConfiguration> subTracks = new ArrayList<>();
-
-                for (int i = 0; i < subtitleUrl.length; i++) {
-                    MediaItem.SubtitleConfiguration subtitleConfiguration =
-                            new MediaItem.SubtitleConfiguration.Builder(Uri.parse(subtitleUrl[i]))
-                                    .setMimeType(MimeTypes.TEXT_VTT)
-                                    .setLanguage(subtitleLabel[i])
-                                    .setSelectionFlags(C.SELECTION_FLAG_DEFAULT)
-                                    .build();
-                    subTracks.add(subtitleConfiguration);
-                }
-
-                media = new MediaItem.Builder()
+                HlsMediaSource.Factory hlsFactory = new HlsMediaSource.Factory(videoFactory);
+                MediaItem videoItem = new MediaItem.Builder()
                         .setUri(url)
-                        .setSubtitleConfigurations(subTracks)
                         .build();
 
-                MediaSource mediaSource = hlsFactory.createMediaSource(media);
-                exoPlayer.setMediaSource(mediaSource);
+                MediaSource videoSource = hlsFactory.createMediaSource(videoItem);
+
+                List<MediaSource> subtitleSources = new ArrayList<>();
+
+                for (int i = 0; i < subtitleUrl.length; i++) {
+                    MediaItem.SubtitleConfiguration subtitleConfig = new MediaItem.SubtitleConfiguration.Builder(
+                            Uri.parse(subtitleUrl[i]))
+                            .setMimeType(MimeTypes.TEXT_VTT)
+                            .setLanguage(subtitleLabel[i])
+                            .setSelectionFlags(C.SELECTION_FLAG_DEFAULT)
+                            .build();
+
+                    DefaultHttpDataSource.Factory subtitleFactory = new DefaultHttpDataSource.Factory(); // No Referer
+                    MediaSource subtitleSource = new SingleSampleMediaSource.Factory(subtitleFactory)
+                            .createMediaSource(subtitleConfig, C.TIME_UNSET);
+                    subtitleSources.add(subtitleSource);
+                }
+
+                MediaSource[] mergedSources = new MediaSource[subtitleSources.size() + 1];
+                mergedSources[0] = videoSource;
+                for (int i = 0; i < subtitleSources.size(); i++) {
+                    mergedSources[i + 1] = subtitleSources.get(i);
+                }
+
+                MergingMediaSource finalSource = new MergingMediaSource(mergedSources);
+
+                exoPlayer.setMediaSource(finalSource);
 
             } else {
-                media = MediaItem.fromUri(url);
+                MediaItem media = MediaItem.fromUri(url);
                 exoPlayer.setMediaItem(media);
             }
 
