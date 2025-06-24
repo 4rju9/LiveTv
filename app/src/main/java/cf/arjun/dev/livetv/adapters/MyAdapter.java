@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.StandardCharsets;
+
 import cf.arjun.dev.livetv.MainActivity;
 import cf.arjun.dev.livetv.PlayerViewActivity;
 import cf.arjun.dev.livetv.R;
@@ -38,10 +41,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public boolean isSearched = false, isAnime = false;
     private Queue queue;
     private ProgressDialog dialog;
+    private SharedPreferences logPrefs;
     public MyAdapter (Context context) {
         this.context = context;
         this.dialog = new ProgressDialog(context);
         queue = Queue.getInstance(context);
+        logPrefs = context.getSharedPreferences("log", Context.MODE_PRIVATE);
     }
 
     public void setData (JSONArray data) {
@@ -152,7 +157,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 dialog.setTitle("Loading Episodes !!");
                 dialog.setMessage("Please wait....");
                 dialog.show();
-                getEpisodesList(MainActivity.ANIME_BASE_URL, finalAnime_id, finalPoster);
+                getEpisodesList(finalAnime_id, finalPoster);
             }
 
         });
@@ -190,7 +195,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     }
 
-    private void getEpisodesList (String base_url, String id, String poster) {
+    private void getEpisodesList (String id, String poster) {
         if (queue != null) {
             try {
                 queue.makeRequest(
@@ -202,7 +207,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                         },
                         error -> {
                             dialog.dismiss();
-                            Toast.makeText(context, "Something went wrong, " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Try again later.", Toast.LENGTH_SHORT).show();
+                            if (error.networkResponse != null) {
+                                String errorBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                                logPrefs.edit().putString(
+                                        "log",
+                                        "Code: " + error.networkResponse.statusCode + ", Body: " + errorBody
+                                ).apply();
+                            } else {
+                                logPrefs.edit().putString(
+                                        "log",
+                                        "No network response" + error
+                                ).apply();
+                            }
                         }
                 );
             } catch (Exception ignore) {}

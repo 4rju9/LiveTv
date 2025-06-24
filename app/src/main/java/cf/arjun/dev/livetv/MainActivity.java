@@ -1,5 +1,7 @@
 package cf.arjun.dev.livetv;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private Runnable runnable;
     private Fragment fragment;
     private EditText searchBar;
+    private SharedPreferences logPrefs;
     public static int THEME_INDEX = 0;
     public static int[] THEMES = {
             R.style.DeepSkyBlueNav, R.style.BrownNav, R.style.YellowNav, R.style.PurpleNav,
@@ -97,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         bottomBar = findViewById(R.id.bottomNavigationBar);
         bottomBar.setSelectedItemId(R.id.menuAnime);
         searchBar = findViewById(R.id.searchViewContainer);
+        logPrefs = getSharedPreferences("log", Context.MODE_PRIVATE);
         setupSearchBar();
     }
 
@@ -187,6 +191,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String query = searchBar.getText().toString();
+                if (query.contains("show_logs")) {
+                    searchBar.setText("");
+                    searchBar.clearFocus();
+
+                    String log = logPrefs.getString("log", "No logs found.");
+
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Logs mode !!")
+                            .setMessage(log)
+                            .setPositiveButton("Copy", (dialog, index) -> {
+                                dialog.dismiss();
+                                ClipboardManager cm = (ClipboardManager) MainActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                ClipData clip = ClipData.newPlainText("Logs", log);
+                                cm.setPrimaryClip(clip);
+                                Toast.makeText(MainActivity.this, "Log copied to clipboard", Toast.LENGTH_SHORT).show();
+                            })
+                            .create()
+                            .show();
+
+                    return;
+                }
                 searchAnime(query);
             }
             @Override
@@ -209,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(searchBar.getWindowToken(), 0);
             }
         };
-        handler.postDelayed(runnable, 1000);
+        handler.postDelayed(runnable, 2000);
     }
 
     private void setupBottomBar () {
