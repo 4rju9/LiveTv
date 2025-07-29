@@ -3,6 +3,7 @@ package cf.arjun.dev.livetv.adapters;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
     private JSONArray servers;
     private String episodeId, serverCategory, title;
     private ProgressDialog dialog;
+    private SharedPreferences logPrefs;
 
     public ServerAdapter(Context context, JSONArray servers, String episodeId, String serverCategory, String title) {
         this.context = context;
@@ -41,6 +43,7 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
         this.episodeId = episodeId;
         this.serverCategory = serverCategory;
         this.title = title;
+        this.logPrefs = context.getSharedPreferences("log", Context.MODE_PRIVATE);
     }
 
     @NonNull
@@ -84,7 +87,9 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
                                 }
                         );
 
-                    } catch (Exception ignore) {}
+                    } catch (Exception e) {
+                        logPrefs.edit().putString("log", Objects.requireNonNull(e.getMessage())).apply();
+                    }
                 }
 
             });
@@ -114,8 +119,8 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
             JSONObject results = responseObject.getJSONObject("results");
             JSONObject streamingLink = results.getJSONObject("streamingLink");
             JSONObject link = streamingLink.getJSONObject("link");
-            JSONObject intro = streamingLink.getJSONObject("intro");
-            JSONObject outro = streamingLink.getJSONObject("outro");
+            JSONArray intro = streamingLink.getJSONArray("intro");
+            JSONArray outro = streamingLink.getJSONArray("outro");
 
             String url = link.getString("file");
 
@@ -137,16 +142,17 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
             intent.putExtra("track_labels", track_labels.toArray(new String[0]));
             intent.putExtra("url", url);
             intent.putExtra("title", this.title);
-            intent.putExtra("introStart", intro.getInt("start"));
-            intent.putExtra("introEnd", intro.getInt("end"));
-            intent.putExtra("outroStart", outro.getInt("start"));
-            intent.putExtra("outroEnd", outro.getInt("end"));
+            intent.putExtra("introStart", intro.getInt(0));
+            intent.putExtra("introEnd", intro.getInt(1));
+            intent.putExtra("outroStart", outro.getInt(0));
+            intent.putExtra("outroEnd", outro.getInt(1));
             intent.putExtra("supportIntroOutro", true);
             intent.setAction("HLS");
             context.startActivity(intent);
 
         } catch (JSONException e) {
             Log.d("x4rju9", Objects.requireNonNull(e.getMessage()));
+            logPrefs.edit().putString("log", Objects.requireNonNull(e.getMessage())).apply();
             if (dialog != null) {
                 dialog.dismiss();
             }

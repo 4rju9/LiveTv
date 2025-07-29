@@ -22,8 +22,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
@@ -81,7 +86,12 @@ public class MainActivity extends AppCompatActivity {
 
         setTheme(THEMES[THEME_INDEX]);
 
+        EdgeToEdge.enable(this);
+        WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView())
+                        .setAppearanceLightStatusBars(THEME_INDEX <= 4);
         setContentView(R.layout.activity_main);
+
+        applyDisplayCutout();
 
         Executors.newFixedThreadPool(1).execute(() -> {
             String FETCH_URL = MainActivity.this.getString(R.string.fetchUrl);
@@ -92,6 +102,17 @@ public class MainActivity extends AppCompatActivity {
         setupMenuBar();
         setupBottomBar();
 
+    }
+
+    private void applyDisplayCutout () {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root), (v, insets) -> {
+            Insets bars = insets.getInsets(
+                    WindowInsetsCompat.Type.systemBars()
+                    | WindowInsetsCompat.Type.displayCutout()
+            );
+            v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
     }
 
     private void setupUIViews () {
