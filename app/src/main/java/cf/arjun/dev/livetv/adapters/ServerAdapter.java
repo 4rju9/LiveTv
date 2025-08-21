@@ -119,8 +119,8 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
             JSONObject results = responseObject.getJSONObject("results");
             JSONObject streamingLink = results.getJSONObject("streamingLink");
             JSONObject link = streamingLink.getJSONObject("link");
-            JSONArray intro = streamingLink.getJSONArray("intro");
-            JSONArray outro = streamingLink.getJSONArray("outro");
+            JSONObject intro = streamingLink.getJSONObject("intro");
+            JSONObject outro = streamingLink.getJSONObject("outro");
 
             String url = link.getString("file");
 
@@ -142,10 +142,10 @@ public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ServerView
             intent.putExtra("track_labels", track_labels.toArray(new String[0]));
             intent.putExtra("url", url);
             intent.putExtra("title", this.title);
-            intent.putExtra("introStart", intro.getInt(0));
-            intent.putExtra("introEnd", intro.getInt(1));
-            intent.putExtra("outroStart", outro.getInt(0));
-            intent.putExtra("outroEnd", outro.getInt(1));
+            intent.putExtra("introStart", intro.getInt("start"));
+            intent.putExtra("introEnd", intro.getInt("end"));
+            intent.putExtra("outroStart", outro.getInt("start"));
+            intent.putExtra("outroEnd", outro.getInt("end"));
             intent.putExtra("supportIntroOutro", true);
             intent.setAction("HLS");
             context.startActivity(intent);
